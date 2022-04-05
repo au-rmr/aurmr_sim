@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>aurmr_gazebo</name>
+  <version>1.0.0</version>
+  <description>
+    Worlds, objects, robots, sensors
+  </description>
+  <license>MIT</license>
+  <maintainer email="amazon-manipulation@cs.washington.edu">AURMR Contributors</maintainer>
+  <author email="amazon-manipulation@cs.washington.edu">AURMR Contributors</author>
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <exec_depend>gazebo</exec_depend>
+  <exec_depend>gazebo_plugins</exec_depend>
+  <exec_depend>moveit_ros</exec_depend>
+  <exec_depend>tahoma_description</exec_depend>
+  <exec_depend>tahoma_moveit_config</exec_depend>
+  <exec_depend>ur_gazebo</exec_depend>
+
+  <build_depend>gazebo_dev</build_depend>
+  <exec_depend>gazebo_ros</exec_depend>
+  <depend>roscpp</depend>
+  <depend>std_msgs</depend>
+  <depend>control_toolbox</depend>
+  <depend>controller_manager</depend>
+  <depend>pluginlib</depend>
+  <depend>hardware_interface</depend>
+  <depend>transmission_interface</depend>
+  <depend>joint_limits_interface</depend>
+  <depend>urdf</depend>
+  <depend>angles</depend>
+  <depend>gazebo_ros_control</depend>
+
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>xacro</exec_depend>
+
+
+  <export>
+  </export>
+</package>

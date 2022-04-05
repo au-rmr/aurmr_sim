@@ -1,0 +1,37 @@
+<launch>
+    <arg name="x" default="0.0" />
+    <arg name="y" default="0.0" />
+    <arg name="z" default="0.0" />
+    <arg name="yaw" default="0.0" />
+
+    <!-- Controller configuration -->
+    <arg name="controller_config_file" default="$(find aurmr_gazebo)/config/tahoma_controllers.yaml" doc="Config file used for defining the ROS-Control controllers."/>
+    <arg name="gripper_controller_config_file" default="$(find aurmr_gazebo)/config/2f_85_gripper_controllers.yaml" doc="Config file used for defining the gripper's ROS-Control controllers."/>
+    <arg name="controllers" default="joint_state_controller pos_joint_traj_controller gripper_controller" doc="Controllers that are activated by default."/>
+    <arg name="stopped_controllers" default="joint_group_pos_controller" doc="Controllers that are initally loaded, but not started."/>
+
+    <!-- Load controller settings -->
+    <rosparam file="$(arg controller_config_file)" command="load"/>
+    <rosparam file="$(arg gripper_controller_config_file)" command="load"/>
+
+    <!-- URDF and TF support -->
+    <param name="robot_description" command="xacro $(find aurmr_gazebo)/robots/tahoma.gazebo.xacro" />
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" >
+        <param name="publish_frequency" value="100.0"/>
+    </node>
+
+
+    <!-- Put a robot in gazebo, make it look pretty -->
+    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+          args="-urdf -x $(arg x) -y $(arg y) -z $(arg z) -Y $(arg yaw) -model tahoma -param robot_description"/>
+
+    <!-- Load and start the controllers listed in the 'controllers' arg. -->
+    <node name="ros_control_controller_spawner" pkg="controller_manager" type="spawner"
+          args="$(arg controllers)" output="screen" respawn="false" />
+
+    <!-- Load other controllers, but do not start them -->
+    <node name="ros_control_stopped_spawner" pkg="controller_manager" type="spawner"
+          args="--stopped $(arg stopped_controllers)" output="screen" respawn="false" />
+
+
+</launch>
