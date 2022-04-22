@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.0.2)
 project(aurmr_gazebo)
 
 find_package(catkin REQUIRED COMPONENTS
@@ -29,7 +29,7 @@ catkin_package(
         angles
         hardware_interface)
 
-install(DIRECTORY launch worlds robots
+install(DIRECTORY config launch robots worlds
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 

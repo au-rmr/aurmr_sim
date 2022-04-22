@@ -1,7 +1,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="tahoma">
   <xacro:include filename="$(find tahoma_description)/robots/tahoma.xacro"/>
   <xacro:include filename="$(find aurmr_gazebo)/urdf/robotiq_2f_85_gazebo_macro.xacro" />
-
+  <xacro:include filename="$(find aurmr_gazebo)/urdf/d415.gazebo.xacro"/>
   <xacro:robotiq_2f_85_gazebo prefix="gripper_" />
 
   <!-- Configure self collision properties per link -->
@@ -33,10 +33,87 @@
   </gazebo>
 
 
+  <gazebo reference="stand">
+      <material>AURMR/BlueAluminum</material>
+  </gazebo>
+
+  <gazebo reference="stand_brace">
+      <material>AURMR/BlueAluminum</material>
+  </gazebo>
+
+  <gazebo reference="stand_upright">
+      <material>AURMR/BlueAluminum</material>
+  </gazebo>
+
+  <gazebo reference="robot_beam">
+    <material>AURMR/BlueAluminum</material>
+  </gazebo>
+    <gazebo reference="control_box_mount">
+    <material>AURMR/BlueAluminum</material>
+  </gazebo>
+      <gazebo reference="front_left_caster">
+    <material>Gazebo/Gray</material>
+  </gazebo>
+        <gazebo reference="front_right_caster">
+    <material>Gazebo/Gray</material>
+  </gazebo>
+        <gazebo reference="back_left_caster">
+    <material>Gazebo/Gray</material>
+  </gazebo>
+        <gazebo reference="back_right_caster">
+    <material>Gazebo/Gray</material>
+  </gazebo>
+
+  <xacro:if value="${'$(arg realsense)' == 'false' }">
+    <gazebo reference="mid_camera_depth_frame">
+      <sensor type="camera" name="depth_camera">
+        <update_rate>6.0</update_rate>
+        <camera name="depth">
+          <horizontal_fov>1.047198</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.02</near>
+            <far>100</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <!-- Noise is sampled independently per pixel on each frame.
+                 That pixel's noise value is added to each of its color
+                 channels, which at that point lie in the range [0,1]. -->
+            <mean>0.0</mean>
+            <stddev>0.007</stddev>
+          </noise>
+        </camera>
+        <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+          <alwaysOn>false</alwaysOn>
+          <updateRate>0.0</updateRate>
+          <cameraName>camera</cameraName>
+          <imageTopicName>color/image_raw</imageTopicName>
+          <cameraInfoTopicName>color/camera_info</cameraInfoTopicName>
+          <frameName>camera_depth_optical_frame</frameName>
+          <hackBaseline>0.07</hackBaseline>
+          <distortionK1>0.0</distortionK1>
+          <distortionK2>0.0</distortionK2>
+          <distortionK3>0.0</distortionK3>
+          <distortionT1>0.0</distortionT1>
+          <distortionT2>0.0</distortionT2>
+        </plugin>
+      </sensor>
+    </gazebo>
+  </xacro:if>
+  <xacro:if value="${'$(arg realsense)' == 'true' }">
+        <xacro:sensor_d415_gazebo name="mid_camera"/>
+  </xacro:if>
+
+
   <link name="world"/>
   <joint name="world_joint" type="fixed">
     <parent link="world"/>
     <child link="base_link"/>
-    <origin xyz="0 0 .5" rpy="0 0 0"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
 </robot>

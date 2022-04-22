@@ -2,6 +2,7 @@
   <arg name="initial_pose_x" default="0.0"/>
   <arg name="initial_pose_y" default="0.0"/>
   <env name="GAZEBO_MODEL_PATH" value="$(find aurmr_gazebo)/models:$(optenv GAZEBO_MODEL_PATH)" />
+  <env name="GAZEBO_RESOURCE_PATH" value="$(find aurmr_gazebo)/models/tahoma_materials:$(optenv GAZEBO_RESOURCE_PATH)" />
 
   <arg name="rviz" default="true"/>
   <arg name="gui" default="true"/>

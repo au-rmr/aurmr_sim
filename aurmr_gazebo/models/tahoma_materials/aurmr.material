@@ -1,0 +1,14 @@
+material AURMR/BlueAluminum
+{
+  technique
+  {
+    pass ambient
+    {
+      lighting on
+
+      ambient .2 .4 .62 1
+      diffuse .27 .45 .68 1
+      specular 0.5 0.5 0.5 1
+    }
+  }
+}
