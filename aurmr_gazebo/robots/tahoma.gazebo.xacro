@@ -1,8 +1,10 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="tahoma">
   <xacro:include filename="$(find tahoma_description)/robots/tahoma.xacro"/>
-  <xacro:include filename="$(find aurmr_gazebo)/urdf/robotiq_2f_85_gazebo_macro.xacro" />
+  <xacro:include filename="$(find aurmr_gazebo)/urdf/robotiq_2f_85_gazebo_macro.xacro"/>
+  <xacro:include filename="$(find aurmr_gazebo)/urdf/l515.gazebo.xacro"/>
   <xacro:include filename="$(find aurmr_gazebo)/urdf/d415.gazebo.xacro"/>
-  <xacro:robotiq_2f_85_gazebo prefix="gripper_" />
+  <xacro:robotiq_2f_85_gazebo prefix="gripper_"/>
+  <xacro:arg name="realsense" default="true" />
 
   <!-- Configure self collision properties per link -->
   <gazebo reference="arm_shoulder_link">
@@ -34,34 +36,52 @@
 
 
   <gazebo reference="stand">
-      <material>AURMR/BlueAluminum</material>
+    <material>AURMR/BlueAluminum</material>
   </gazebo>
 
   <gazebo reference="stand_brace">
-      <material>AURMR/BlueAluminum</material>
+    <material>AURMR/BlueAluminum</material>
   </gazebo>
 
   <gazebo reference="stand_upright">
-      <material>AURMR/BlueAluminum</material>
+    <material>AURMR/BlueAluminum</material>
   </gazebo>
 
-  <gazebo reference="robot_beam">
+  <gazebo reference="cantilever">
     <material>AURMR/BlueAluminum</material>
   </gazebo>
-    <gazebo reference="control_box_mount">
+  <gazebo reference="control_box_mount">
     <material>AURMR/BlueAluminum</material>
   </gazebo>
-      <gazebo reference="front_left_caster">
+  <gazebo reference="control_box">
     <material>Gazebo/Gray</material>
   </gazebo>
-        <gazebo reference="front_right_caster">
+  <gazebo reference="robot_plate">
+    <material>AURMR/BlueAluminum</material>
+  </gazebo>
+  <gazebo reference="front_left_caster">
     <material>Gazebo/Gray</material>
   </gazebo>
-        <gazebo reference="back_left_caster">
+  <gazebo reference="front_right_caster">
     <material>Gazebo/Gray</material>
   </gazebo>
-        <gazebo reference="back_right_caster">
+  <gazebo reference="back_left_caster">
     <material>Gazebo/Gray</material>
+  </gazebo>
+  <gazebo reference="back_right_caster">
+    <material>Gazebo/Gray</material>
+  </gazebo>
+  <gazebo reference="left_light_panel">
+    <material>Gazebo/Gray</material>
+  </gazebo>
+  <gazebo reference="right_light_panel">
+    <material>Gazebo/Gray</material>
+  </gazebo>
+  <gazebo reference="left_light_panel_emitter">
+    <material>Gazebo/WhiteGlow</material>
+  </gazebo>
+  <gazebo reference="right_light_panel_emitter">
+    <material>Gazebo/WhiteGlow</material>
   </gazebo>
 
   <xacro:if value="${'$(arg realsense)' == 'false' }">
@@ -106,14 +126,8 @@
     </gazebo>
   </xacro:if>
   <xacro:if value="${'$(arg realsense)' == 'true' }">
-        <xacro:sensor_d415_gazebo name="mid_camera"/>
+    <!--xacro:sensor_l515_gazebo name="stand_camera"/-->
+    <xacro:sensor_d415_gazebo name="stand_camera"/>
   </xacro:if>
 
-
-  <link name="world"/>
-  <joint name="world_joint" type="fixed">
-    <parent link="world"/>
-    <child link="base_link"/>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-  </joint>
 </robot>
