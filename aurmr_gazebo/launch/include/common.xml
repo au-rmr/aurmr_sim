@@ -25,10 +25,13 @@
   <group if="$(arg gui)">
     <node name="gazebo_gui" pkg="gazebo_ros" type="gzclient" respawn="false" output="screen" launch-prefix="$(optenv OPTIRUN_LAUNCH_PREFIX)" required="true" />
   </group>
-  
+
   <include file="$(find aurmr_gazebo)/launch/include/spawn_tahoma.xml">
     <arg name="x" value="$(arg initial_pose_x)" />
     <arg name="y" value="$(arg initial_pose_y)" />
+  </include>
+
+    <include file="$(find aurmr_gazebo)/launch/include/spawn_pod.xml">
   </include>
 
 </launch>

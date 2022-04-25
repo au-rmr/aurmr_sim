@@ -20,10 +20,10 @@
         <param name="publish_frequency" value="100.0"/>
     </node>
 
-
     <!-- Put a robot in gazebo, make it look pretty -->
-    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
-          args="-urdf -x $(arg x) -y $(arg y) -z $(arg z) -Y $(arg yaw) -model tahoma -param robot_description"/>
+    <node name="tahoma_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+          args="-urdf -x $(arg x) -y $(arg y) -z $(arg z) -Y $(arg yaw) -J arm_shoulder_lift_joint -1.62 -model tahoma -param robot_description"/>
+
 
     <!-- Load and start the controllers listed in the 'controllers' arg. -->
     <node name="ros_control_controller_spawner" pkg="controller_manager" type="spawner"

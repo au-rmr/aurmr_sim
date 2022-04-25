@@ -1,0 +1,21 @@
+<launch>
+    <arg name="x" default="0.8" />
+    <arg name="y" default="0.4" />
+    <arg name="z" default="0.0" />
+    <arg name="yaw" default="-1.5708" />
+
+    <!-- URDF and TF support -->
+    <param name="pod1_description" command="xacro $(find aurmr_gazebo)/robots/pod.gazebo.xacro" />
+    <node name="pod1_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+        <remap from="robot_description" to="pod1_description"/>
+        <remap from="joint_states" to="/dev/null" />
+    </node>
+
+    <node name="robot_to_pod1_transform" pkg="tf2_ros" type="static_transform_publisher" args="$(arg x) $(arg y) 0 $(arg yaw) 0 0 base_link pod_base_link" output="screen"/>
+
+
+    <!-- Put pod in gazebo -->
+    <node name="pod_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+          args="-urdf -x $(arg x) -y $(arg y) -z $(arg z) -Y $(arg yaw) -model pod -param pod1_description"/>
+
+</launch>

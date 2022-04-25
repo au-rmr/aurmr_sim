@@ -12,3 +12,18 @@ material AURMR/BlueAluminum
     }
   }
 }
+
+material AURMR/YellowFabric
+{
+  technique
+  {
+    pass ambient
+    {
+      lighting on
+
+      ambient 1 .91 .2 1
+      diffuse 1 .91 .2 1
+      specular 0.0 0.0 0.0 1
+    }
+  }
+}

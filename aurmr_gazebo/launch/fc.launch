@@ -2,8 +2,8 @@
   <arg name="robot" default="astro" />
   <include file="$(find aurmr_gazebo)/launch/empty_simulation.launch">
     <arg name="world" value="$(find aurmr_gazebo)/worlds/fc.world" />
-    <arg name="initial_pose_x" value="3.5"/>
-    <arg name="initial_pose_y" value="1.0"/>
+    <arg name="initial_pose_x" value="0"/>
+    <arg name="initial_pose_y" value="0"/>
   </include>
 
 </launch>
