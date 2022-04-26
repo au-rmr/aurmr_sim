@@ -29,7 +29,7 @@ catkin_package(
         angles
         hardware_interface)
 
-install(DIRECTORY config launch robots worlds
+install(DIRECTORY config launch models robots urdf worlds
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 
