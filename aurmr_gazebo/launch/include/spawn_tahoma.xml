@@ -22,7 +22,7 @@
 
     <!-- Put a robot in gazebo, make it look pretty -->
     <node name="tahoma_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
-          args="-urdf -x $(arg x) -y $(arg y) -z $(arg z) -Y $(arg yaw) -J arm_shoulder_lift_joint -1.62 -model tahoma -param robot_description"/>
+          args="-urdf -x $(arg x) -y $(arg y) -z $(arg z) -Y $(arg yaw) -J arm_shoulder_lift_joint -1.57 -J arm_elbow_joint 1.57 -model tahoma -param robot_description"/>
 
 
     <!-- Load and start the controllers listed in the 'controllers' arg. -->
