@@ -126,8 +126,7 @@
     </gazebo>
   </xacro:if>
   <xacro:if value="${'$(arg realsense)' == 'true' }">
-    <!--xacro:sensor_l515_gazebo name="stand_camera"/-->
-    <xacro:sensor_d415_gazebo name="stand_camera"/>
+    <xacro:sensor_l515_gazebo name="stand_camera"/>
   </xacro:if>
 
 </robot>
