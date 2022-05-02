@@ -9,7 +9,7 @@ This is the Gazebo URDF model for the Intel RealSense L515 camera
 
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <xacro:macro name="sensor_l515_gazebo" params="name  publish_pointcloud:=true" >
+  <xacro:macro name="sensor_l515_gazebo" params="name  publish_pointcloud:=false" >
 
     <!-- Load parameters to model's main link-->
     <xacro:property name="deg_to_rad" value="0.01745329251994329577" />
@@ -34,7 +34,7 @@ This is the Gazebo URDF model for the Intel RealSense L515 camera
             <format>RGB_INT8</format>
           </image>
           <clip>
-            <near>0.1</near>
+            <near>0.01</near>
             <far>100</far>
           </clip>
           <noise>
@@ -45,7 +45,7 @@ This is the Gazebo URDF model for the Intel RealSense L515 camera
         </camera>
         <always_on>1</always_on>
         <update_rate>30</update_rate>
-        <visualize>1</visualize>
+        <visualize>0</visualize>
       </sensor>
       <sensor name="${name}ired" type="camera">
         <camera name="${name}">
@@ -56,8 +56,8 @@ This is the Gazebo URDF model for the Intel RealSense L515 camera
             <format>L_INT8</format>
           </image>
           <clip>
-            <near>0.1</near>
-            <far>100</far>
+            <near>0.25</near>
+            <far>6.5</far>
           </clip>
           <noise>
             <type>gaussian</type>
@@ -66,7 +66,7 @@ This is the Gazebo URDF model for the Intel RealSense L515 camera
           </noise>
         </camera>
         <always_on>1</always_on>
-        <update_rate>90</update_rate>
+        <update_rate>30</update_rate>
         <visualize>0</visualize>
       </sensor>
       <sensor name="${name}depth" type="depth">
@@ -77,8 +77,8 @@ This is the Gazebo URDF model for the Intel RealSense L515 camera
             <height>768</height>
           </image>
           <clip>
-            <near>0.1</near>
-            <far>100</far>
+            <near>0.25</near>
+            <far>6.5</far>
           </clip>
           <noise>
             <type>gaussian</type>
@@ -87,13 +87,13 @@ This is the Gazebo URDF model for the Intel RealSense L515 camera
           </noise>
         </camera>
         <always_on>1</always_on>
-        <update_rate>90</update_rate>
+        <update_rate>30</update_rate>
         <visualize>0</visualize>
       </sensor>
     </gazebo>
 
     <gazebo>
-      <plugin name="${name}" filename="librealsense_gazebo_plugin.so">
+      <plugin name="${name}" filename="librealsense_l515_gazebo_plugin.so">
         <prefix>${name}</prefix>
         <depthUpdateRate>30.0</depthUpdateRate>
         <colorUpdateRate>30.0</colorUpdateRate>
@@ -108,7 +108,7 @@ This is the Gazebo URDF model for the Intel RealSense L515 camera
         <depthOpticalframeName>${name}_depth_optical_frame</depthOpticalframeName>
         <infraredOpticalframeName>${name}_infra_optical_frame</infraredOpticalframeName>
         <rangeMinDepth>0.2</rangeMinDepth>
-        <rangeMaxDepth>10.0</rangeMaxDepth>
+        <rangeMaxDepth>6.5</rangeMaxDepth>
         <pointCloud>${publish_pointcloud}</pointCloud>
         <pointCloudTopicName>depth/color/points</pointCloudTopicName>
         <pointCloudCutoff>0.25</pointCloudCutoff>
