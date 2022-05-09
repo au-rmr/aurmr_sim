@@ -34,6 +34,9 @@
     </plugin>
   </gazebo>
 
+    <gazebo reference="coupling">
+        <material>Gazebo/Black</material>
+    </gazebo>
 
   <gazebo reference="stand">
     <material>AURMR/BlueAluminum</material>
@@ -42,11 +45,12 @@
   <gazebo reference="stand_brace">
     <material>AURMR/BlueAluminum</material>
   </gazebo>
-
   <gazebo reference="stand_upright">
     <material>AURMR/BlueAluminum</material>
   </gazebo>
-
+    <gazebo reference="camera_beam_lower">
+    <material>AURMR/BlueAluminum</material>
+  </gazebo>
   <gazebo reference="cantilever">
     <material>AURMR/BlueAluminum</material>
   </gazebo>

@@ -78,18 +78,71 @@
       </link>
       <pose frame=''>0 0 0 0 -0 0</pose>
     </model>
-    <light name="Warehouse_CeilingLight_003" type="point">
-      <pose frame="">0 0 9 0 0 0</pose>
+    <light name="ceiling_light" type="point">
+      <pose frame="">0 0 5 0 0 0</pose>
       <diffuse>0.5 0.5 0.5 1</diffuse>
       <specular>0.2 0.2 0.2 1</specular>
       <attenuation>
         <range>80</range>
-        <constant>0.3</constant>
+        <constant>1.0</constant>
         <linear>0.01</linear>
         <quadratic>0.001</quadratic>
       </attenuation>
       <cast_shadows>1</cast_shadows>
       <direction>0.1 0.1 -1</direction>
     </light>
+    <light name="left_light_panel_lower" type="point">
+      <pose frame="">-.24 .36 1 0 0 0</pose>
+      <diffuse>.4 .4 .4 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>4</range>
+        <constant>1</constant>
+        <linear>0.7</linear>
+        <quadratic>0.1</quadratic>
+      </attenuation>
+      <cast_shadows>0</cast_shadows>
+      <direction>0.1 0.1 -1</direction>
+    </light>
+    <light name="right_light_panel_lower" type="point">
+      <pose frame="">-.24 -.36 1 0 0 0</pose>
+      <diffuse>.4 .4 .4 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>4</range>
+        <constant>1</constant>
+        <linear>0.7</linear>
+        <quadratic>0.1</quadratic>
+      </attenuation>
+      <cast_shadows>0</cast_shadows>
+      <direction>0.1 0.1 -1</direction>
+    </light>
+        <light name="left_light_panel_upper" type="point">
+      <pose frame="">-.24 .36 1.62 0 0 0</pose>
+      <diffuse>.4 .4 .4 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>4</range>
+        <constant>1</constant>
+        <linear>0.7</linear>
+        <quadratic>0.1</quadratic>
+      </attenuation>
+      <cast_shadows>0</cast_shadows>
+      <direction>0.1 0.1 -1</direction>
+    </light>
+    <light name="right_light_panel_upper" type="point">
+      <pose frame="">-.24 -.36 1.62 0 0 0</pose>
+      <diffuse>.4 .4 .4 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>4</range>
+        <constant>1</constant>
+        <linear>0.7</linear>
+        <quadratic>0.1</quadratic>
+      </attenuation>
+      <cast_shadows>0</cast_shadows>
+      <direction>0.1 0.1 -1</direction>
+    </light>
+
   </world>
 </sdf>

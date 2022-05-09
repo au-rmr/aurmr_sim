@@ -6,9 +6,9 @@ material AURMR/BlueAluminum
     {
       lighting on
 
-      ambient .14 .24 .31 1
-      diffuse .16 .25 .48 1
-      specular 0.5 0.5 0.5 1
+      ambient .18 .26 .46 1
+      diffuse .20 .33 .43 1
+     specular 0.1 0.1 0.1 1
     }
   }
 }
@@ -21,9 +21,32 @@ material AURMR/YellowFabric
     {
       lighting on
 
-      ambient 1 .91 .2 1
-      diffuse 1 .91 .2 1
-      specular 0.0 0.0 0.0 1
+      ambient .82 .65 .3 1
+      diffuse .9 .8 .18 1
+
+      texture_unit
+       {
+         texture rough-cloth.png
+         scale 0.3 0.3
+       }
+
     }
+
+    pass noise
+    {
+      ambient 0.1 0.1 0.1 .2
+      diffuse 0.1 0.1 0.1 .2
+      depth_write off
+      scene_blend src_alpha one
+      texture_unit
+			{
+				// Perlin noise volume
+				texture waves2.dds
+				scene_blend alpha_blend
+				// min / mag filtering, no mip
+				filtering linear linear none
+			}
+    }
+
   }
 }
