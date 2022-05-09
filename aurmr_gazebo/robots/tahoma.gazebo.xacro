@@ -2,7 +2,6 @@
   <xacro:include filename="$(find tahoma_description)/robots/tahoma.xacro"/>
   <xacro:include filename="$(find aurmr_gazebo)/urdf/robotiq_2f_85_gazebo_macro.xacro"/>
   <xacro:include filename="$(find aurmr_gazebo)/urdf/l515.gazebo.xacro"/>
-  <xacro:include filename="$(find aurmr_gazebo)/urdf/d415.gazebo.xacro"/>
   <xacro:robotiq_2f_85_gazebo prefix="gripper_"/>
   <xacro:arg name="realsense" default="true" />
 
@@ -93,7 +92,7 @@
       <sensor type="camera" name="depth_camera">
         <update_rate>6.0</update_rate>
         <camera name="depth">
-          <horizontal_fov>1.047198</horizontal_fov>
+          <horizontal_fov>1.2393</horizontal_fov>
           <image>
             <width>640</width>
             <height>480</height>
@@ -130,7 +129,8 @@
     </gazebo>
   </xacro:if>
   <xacro:if value="${'$(arg realsense)' == 'true' }">
-    <xacro:sensor_l515_gazebo name="stand_camera"/>
+    <xacro:sensor_l515_gazebo name="camera_lower_left"/>
+    <xacro:sensor_l515_gazebo name="camera_lower_right"/>
   </xacro:if>
 
 </robot>

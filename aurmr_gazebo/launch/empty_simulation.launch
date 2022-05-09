@@ -1,18 +1,23 @@
 <launch>
-  <arg name="initial_pose_x" default="0.0"/>
-  <arg name="initial_pose_y" default="0.0"/>
-  <env name="GAZEBO_MODEL_PATH" value="$(find aurmr_gazebo)/models:$(optenv GAZEBO_MODEL_PATH)" />
-  <env name="GAZEBO_RESOURCE_PATH" value="$(find aurmr_gazebo)/models/tahoma_materials:$(optenv GAZEBO_RESOURCE_PATH)" />
-
   <arg name="rviz" default="true"/>
   <arg name="gui" default="true"/>
   <arg name="world" default="" />
+  <arg name="pod_x" />
+  <arg name="pod_y" />
+  <arg name="pod_yaw"/>
+  <arg name="pod_id" default="1" />
+  <env name="GAZEBO_MODEL_PATH" value="$(find aurmr_gazebo)/models:$(optenv GAZEBO_MODEL_PATH)" />
+  <env name="GAZEBO_RESOURCE_PATH" value="$(find aurmr_gazebo)/models/tahoma_materials:$(optenv GAZEBO_RESOURCE_PATH)" />
+
+
 
   <include file="$(find aurmr_gazebo)/launch/include/common.xml">
     <arg name="gui" value="$(arg gui)" />
     <arg name="world" value="$(arg world)" />
-    <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
-    <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+    <arg name="pod_x" default="$(arg pod_x)"/>
+    <arg name="pod_y" default="$(arg pod_y)"/>
+    <arg name="pod_yaw" default="$(arg pod_yaw)"/>
+    <arg name="pod_id" default="$(arg pod_id)" />
   </include>
 
   <!-- Remap follow_joint_trajectory -->

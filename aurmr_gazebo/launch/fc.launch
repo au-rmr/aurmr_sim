@@ -1,9 +1,10 @@
 <launch>
-  <arg name="robot" default="astro" />
-  <include file="$(find aurmr_gazebo)/launch/empty_simulation.launch">
-    <arg name="world" value="$(find aurmr_gazebo)/worlds/fc.world" />
-    <arg name="initial_pose_x" value="0"/>
-    <arg name="initial_pose_y" value="0"/>
-  </include>
-
+  <arg name="rviz" default="true"/>
+  <arg name="gui" default="true"/>
+  <arg name="pod_x" default="0.65"/>
+  <arg name="pod_y" default="0.47"/>
+  <arg name="pod_yaw" default="-1.57"/>
+  <arg name="pod_id" default="1" />
+  <arg name="world" default="$(find aurmr_gazebo)/worlds/fc.world" />
+  <include file="$(find aurmr_gazebo)/launch/empty_simulation.launch" pass_all_args="true"/>
 </launch>

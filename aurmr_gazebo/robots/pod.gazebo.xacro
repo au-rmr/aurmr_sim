@@ -1,5 +1,6 @@
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="pod">
-  <xacro:include filename="$(find tahoma_description)/robots/pod1.xacro"/>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="pod" params="id">
+  <xacro:arg name="id" default="" />
+  <xacro:include filename="$(find tahoma_description)/robots/pod$(arg id).xacro"/>
 
   <gazebo reference="pod_base_link">
     <material>Gazebo/Gray</material>

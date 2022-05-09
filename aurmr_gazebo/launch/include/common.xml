@@ -1,11 +1,15 @@
 <launch>
-
   <arg name="use_sim_time" default="true" />
   <arg name="gui" default="true" />
   <arg name="debug" default="false" />
   <arg name="world" />
-  <arg name="initial_pose_x" default="0" />
-  <arg name="initial_pose_y" default="0" />
+  <arg name="robot_x" default="0" />
+  <arg name="robot_y" default="0" />
+  <arg name="robot_yaw" default="0" />
+  <arg name="pod_x" />
+  <arg name="pod_y" />
+  <arg name="pod_yaw" default="-1.57" />
+  <arg name="pod_id" default="1" />
   <!-- Gazebo parameters -->
   <arg name="paused" default="false" doc="Starts Gazebo in paused mode" />
 
@@ -27,11 +31,15 @@
   </group>
 
   <include file="$(find aurmr_gazebo)/launch/include/spawn_tahoma.xml">
-    <arg name="x" value="$(arg initial_pose_x)" />
-    <arg name="y" value="$(arg initial_pose_y)" />
+    <arg name="x" value="$(arg robot_x)" />
+    <arg name="y" value="$(arg robot_y)" />
   </include>
 
     <include file="$(find aurmr_gazebo)/launch/include/spawn_pod.xml">
+      <arg name="x" value="$(arg pod_x)" />
+      <arg name="y" value="$(arg pod_y)" />
+      <arg name="yaw" value="$(arg pod_yaw)" />
+      <arg name="id" value="$(arg pod_id)" />
   </include>
 
 </launch>
