@@ -9,7 +9,7 @@
   <xacro:macro name="color_pod_fabric" params="prefix">
     <xacro:arg name="prefix" default=""/>
 
-    <xacro:property name="front_recipe" value="${[0,0,0,0,0,0,0,0,0,0,0,0,0]}"/>
+    <xacro:property name="recipe_a" value="${[0,0,0,0,0,0,0,0,0,0,0,0,0]}"/>
     <xacro:property name="alphabet" value="abcdefghijklmnopqrstuvwxyz"/>
 
 
@@ -28,6 +28,7 @@
       <xacro:shifted_box name="${bin_name}_right"/>
       <xacro:shifted_box name="${bin_name}_top" />
       <xacro:shifted_box name="${bin_name}_back" />
+      <xacro:shifted_box name="${bin_name}_flap" />
 
     </xacro:macro>
 
@@ -57,7 +58,7 @@
 
     </xacro:macro>
 
-    <xacro:shelf_stack prefix="pod_" parent="${prefix}fabric_base" recipe="${front_recipe}"/>
+    <xacro:shelf_stack prefix="pod_" parent="${prefix}fabric_base" recipe="${recipe_a}"/>
 
   </xacro:macro>
 
