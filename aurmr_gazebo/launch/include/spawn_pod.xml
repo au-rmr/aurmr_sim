@@ -5,12 +5,9 @@
     <arg name="yaw" />
     <arg name="id" />
 
-    <!-- URDF and TF support -->
-    <param name="pod_description" command="xacro $(find aurmr_gazebo)/robots/pod.gazebo.xacro id:=$(arg id)" />
-    <node name="pod_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
-        <remap from="robot_description" to="pod_description"/>
-        <remap from="joint_states" to="/dev/null" />
-    </node>
+    <include file="$(find tahoma_description)/launch/load_pod.launch">
+        <arg name="id" value="$(arg id)"/>
+    </include>
 
     <node name="robot_to_pod_transform" pkg="tf2_ros" type="static_transform_publisher" args="$(arg x) $(arg y) 0 $(arg yaw) 0 0 base_link pod_base_link" output="screen"/>
 

@@ -35,7 +35,7 @@
     <arg name="y" value="$(arg robot_y)" />
   </include>
 
-    <include file="$(find aurmr_gazebo)/launch/include/spawn_pod.xml">
+  <include file="$(find aurmr_gazebo)/launch/include/spawn_pod.xml" if="$(eval pod_id > 0)">
       <arg name="x" value="$(arg pod_x)" />
       <arg name="y" value="$(arg pod_y)" />
       <arg name="yaw" value="$(arg pod_yaw)" />

@@ -16,7 +16,7 @@
     <rosparam file="$(arg gripper_controller_config_file)" command="load"/>
 
     <!-- URDF and TF support -->
-    <param name="robot_description" command="xacro $(find aurmr_gazebo)/robots/tahoma.gazebo.xacro" />
+    <param name="robot_description" command="xacro $(find aurmr_gazebo)/robots/tahoma.gazebo.xacro use_nominal_camera_extrinsics:=true" />
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" >
         <param name="publish_frequency" value="100.0"/>
     </node>
@@ -35,7 +35,7 @@
           args="--stopped $(arg stopped_controllers)" output="screen" respawn="false" />
 
 
-    <group ns="stand_camera" if="$(arg realsense)">
+    <group ns="camera_lower_left" if="$(arg realsense)">
         <node pkg="nodelet" type="nodelet" name="nodelet_manager" args="manager"/>
 
         <node pkg="nodelet" type="nodelet" name="nodelet1"
