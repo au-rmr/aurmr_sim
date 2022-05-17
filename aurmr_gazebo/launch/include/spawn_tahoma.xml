@@ -16,7 +16,7 @@
     <rosparam file="$(arg gripper_controller_config_file)" command="load"/>
 
     <!-- URDF and TF support -->
-    <param name="robot_description" command="xacro $(find aurmr_gazebo)/robots/tahoma.gazebo.xacro use_nominal_camera_extrinsics:=true" />
+    <param name="robot_description" command="xacro $(find aurmr_gazebo)/robots/tahoma.gazebo.xacro" />
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" >
         <param name="publish_frequency" value="100.0"/>
     </node>
