@@ -11,8 +11,10 @@
 
     <node name="robot_to_pod_transform" pkg="tf2_ros" type="static_transform_publisher" args="$(arg x) $(arg y) 0 $(arg yaw) 0 0 base_link pod_base_link" output="screen"/>
 
+    <param name="pod_sim_description" command="xacro $(find aurmr_gazebo)/robots/pod.gazebo.xacro id:=$(arg id)" />
+
     <!-- Put pod in gazebo -->
     <node name="pod_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
-          args="-urdf -x $(arg x) -y $(arg y) -z $(arg z) -Y $(arg yaw) -model pod -param pod_description"/>
+          args="-urdf -x $(arg x) -y $(arg y) -z $(arg z) -Y $(arg yaw) -model pod -param pod_sim_description"/>
 
 </launch>

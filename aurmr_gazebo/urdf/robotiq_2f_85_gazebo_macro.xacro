@@ -7,8 +7,6 @@
     This wraps the model of the real robot and adds all elements and parameters
     required by Gazebo.
 
-    It also adds the gazebo_ros_control plugin.
-
     NOTE: this is NOT a URDF. It cannot directly be loaded by consumers
     expecting a flattened '.urdf' file. See the top-level '.xacro' for that
     (but note: that .xacro must still be processed by the xacro command).
@@ -18,8 +16,7 @@
 
   <!-- Definition of the main macro -->
   <xacro:macro name="robotiq_2f_85_gazebo" params="
-    prefix 
-    transmission_hw_interface:=hardware_interface/EffortJointInterface"
+    prefix"
   >
 
 

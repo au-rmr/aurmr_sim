@@ -5,7 +5,7 @@
   <xacro:include filename="$(find aurmr_gazebo)/urdf/robotiq_2f_85_gazebo_macro.xacro"/>
   <xacro:include filename="$(find aurmr_gazebo)/urdf/l515.gazebo.xacro"/>
 
-  <xacro:tahoma use_nominal_camera_extrinsics="true"/>
+  <xacro:tahoma use_nominal_camera_extrinsics="true" gripper_transmission_hw_interface="hardware_interface/PositionJointInterface"/>
 
   <xacro:robotiq_2f_85_gazebo prefix="gripper_"/>
 
