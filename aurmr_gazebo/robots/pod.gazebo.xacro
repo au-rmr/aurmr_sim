@@ -1,6 +1,15 @@
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="pod" params="id">
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="pod">
   <xacro:arg name="id" default="" />
+  <xacro:arg name="fixed" default="true" />
   <xacro:include filename="$(find tahoma_description)/robots/pod$(arg id).xacro"/>
+
+  <xacro:if value="$(arg fixed)">
+    <link name="world"/>
+    <joint name="fixed" type="fixed">
+        <parent link="world"/>
+        <child link="pod_base_link"/>
+    </joint>
+  </xacro:if>
 
   <gazebo reference="pod_base_link">
     <material>Gazebo/Gray</material>
