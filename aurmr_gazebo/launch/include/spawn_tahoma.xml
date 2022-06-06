@@ -23,8 +23,7 @@
 
     <!-- Put a robot in gazebo, make it look pretty -->
     <node name="tahoma_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
-          args="-urdf -x $(arg x) -y $(arg y) -z $(arg z) -Y $(arg yaw) -J arm_shoulder_lift_joint -1.57 -J arm_shoulder_pan_joint -1.57 -model tahoma -param robot_description"/>
-
+          args="-urdf -x $(arg x) -y $(arg y) -z $(arg z) -Y $(arg yaw) -J arm_shoulder_lift_joint -0.47 -J arm_shoulder_pan_joint -1.03 -J arm_elbow_joint -1.62 -J arm_wrist_1_joint -1.07 -J arm_wrist_2_joint -5.30 -J arm_wrist_3_joint 2.92 -model tahoma -param robot_description"/>
 
     <!-- Load and start the controllers listed in the 'controllers' arg. -->
     <node name="ros_control_controller_spawner" pkg="controller_manager" type="spawner"
