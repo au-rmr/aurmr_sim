@@ -35,6 +35,18 @@
     <arg name="y" value="$(arg robot_y)" />
   </include>
 
+  <!-- Gazebo doesn't provide the scaled interfaces (which the robot has), so pass scaled_pos use through to the unscaled interface -->
+  <remap from="/scaled_pos_joint_traj_controller/follow_joint_trajectory" to="/pos_joint_traj_controller/follow_joint_trajectory"/>
+  <!-- MoveIt -->
+  <include file="$(find tahoma_moveit_config)/launch/move_group.launch">
+    <arg name="load_robot_description" value="false" />
+    <arg name="pipeline" value="ompl" />
+  </include>
+
+  <include file="$(find tahoma_moveit_config)/launch/servo.launch">
+
+  </include>
+
   <include file="$(find aurmr_gazebo)/launch/include/spawn_pod.xml" if="$(eval pod_id > 0)">
       <arg name="x" value="$(arg pod_x)" />
       <arg name="y" value="$(arg pod_y)" />

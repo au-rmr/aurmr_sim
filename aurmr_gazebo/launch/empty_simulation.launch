@@ -10,7 +10,6 @@
   <env name="GAZEBO_RESOURCE_PATH" value="$(find aurmr_gazebo)/models/tahoma_materials:$(optenv GAZEBO_RESOURCE_PATH)" />
 
 
-
   <include file="$(find aurmr_gazebo)/launch/include/common.xml">
     <arg name="gui" value="$(arg gui)" />
     <arg name="world" value="$(arg world)" />
@@ -18,13 +17,6 @@
     <arg name="pod_y" default="$(arg pod_y)"/>
     <arg name="pod_yaw" default="$(arg pod_yaw)"/>
     <arg name="pod_id" default="$(arg pod_id)" />
-  </include>
-
-  <!-- Remap follow_joint_trajectory -->
-  <remap from="/scaled_pos_joint_traj_controller/follow_joint_trajectory" to="/pos_joint_traj_controller/follow_joint_trajectory"/>
-  <!-- MoveIt -->
-  <include file="$(find tahoma_moveit_config)/launch/move_group.launch">
-    <arg name="load_robot_description" value="false" />
   </include>
 
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find aurmr_gazebo)/config/tahoma.rviz" if="$(arg rviz)"/>
