@@ -144,6 +144,7 @@
   <xacro:if value="${'$(arg realsense)' == 'true' }">
     <xacro:sensor_l515_gazebo name="camera_lower_left"/>
     <xacro:sensor_l515_gazebo name="camera_lower_right"/>
+    <xacro:sensor_l515_gazebo name="camera_wrist"/>
   </xacro:if>
 
 </robot>
