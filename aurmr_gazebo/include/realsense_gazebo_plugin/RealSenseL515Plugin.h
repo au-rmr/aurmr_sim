@@ -14,8 +14,7 @@
 // limitations under the License.
 */
 
-#ifndef _GZRS_PLUGIN_HH_
-#define _GZRS_PLUGIN_HH_
+#pragma once
 
 #include <gazebo/common/Plugin.hh>
 #include <gazebo/common/common.hh>
@@ -42,13 +41,13 @@ struct CameraParams {
 };
 
 /// \brief A plugin that simulates Real Sense camera streams.
-class RealSensePlugin : public ModelPlugin {
+class RealSenseL515Plugin : public ModelPlugin {
   /// \brief Constructor.
 public:
-  RealSensePlugin();
+  RealSenseL515Plugin();
 
   /// \brief Destructor.
-  ~RealSensePlugin();
+  ~RealSenseL515Plugin();
 
   // Documentation Inherited.
   virtual void Load(physics::ModelPtr _model, sdf::ElementPtr _sdf);
@@ -126,4 +125,4 @@ protected:
   float rangeMaxDepth_;
 };
 }
-#endif
+

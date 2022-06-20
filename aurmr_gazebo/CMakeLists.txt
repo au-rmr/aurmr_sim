@@ -39,8 +39,8 @@ link_directories(${GAZEBO_LIBRARY_DIRS})
 
 add_library(
         realsense_l515_gazebo_plugin
-        src/RealSensePlugin.cpp
-        src/gazebo_ros_realsense.cpp
+        src/RealSenseL515Plugin.cpp
+        src/gazebo_ros_realsense_l515.cpp
 )
 
 target_link_libraries(realsense_l515_gazebo_plugin ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})

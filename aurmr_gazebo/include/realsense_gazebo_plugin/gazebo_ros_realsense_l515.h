@@ -1,7 +1,7 @@
 #ifndef _GAZEBO_ROS_REALSENSE_PLUGIN_
 #define _GAZEBO_ROS_REALSENSE_PLUGIN_
 
-#include "realsense_gazebo_plugin/RealSensePlugin.h"
+#include "realsense_gazebo_plugin/RealSenseL515Plugin.h"
 
 #include <ros/ros.h>
 #include <sensor_msgs/CameraInfo.h>
@@ -17,14 +17,14 @@
 
 namespace gazebo {
 /// \brief A plugin that simulates Real Sense camera streams.
-class GazeboRosRealsense : public RealSensePlugin {
+class GazeboRosRealsenseL515 : public RealSenseL515Plugin {
   /// \brief Constructor.
 public:
-  GazeboRosRealsense();
+  GazeboRosRealsenseL515();
 
   /// \brief Destructor.
 public:
-  ~GazeboRosRealsense();
+  ~GazeboRosRealsenseL515();
 
   // Documentation Inherited.
 public:

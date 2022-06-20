@@ -1,4 +1,4 @@
-#include "realsense_gazebo_plugin/gazebo_ros_realsense.h"
+#include "realsense_gazebo_plugin/gazebo_ros_realsense_l515.h"
 #include <sensor_msgs/fill_image.h>
 #include <sensor_msgs/point_cloud2_iterator.h>
 
@@ -10,15 +10,15 @@ sensor_msgs::CameraInfo cameraInfo(const sensor_msgs::Image &image,
 
 namespace gazebo {
 // Register the plugin
-GZ_REGISTER_MODEL_PLUGIN(GazeboRosRealsense)
+GZ_REGISTER_MODEL_PLUGIN(GazeboRosRealsenseL515)
 
-GazeboRosRealsense::GazeboRosRealsense() {}
+GazeboRosRealsenseL515::GazeboRosRealsenseL515() {}
 
-GazeboRosRealsense::~GazeboRosRealsense() {
+GazeboRosRealsenseL515::~GazeboRosRealsenseL515() {
   ROS_DEBUG_STREAM_NAMED("realsense_camera", "Unloaded");
 }
 
-void GazeboRosRealsense::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf) {
+void GazeboRosRealsenseL515::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf) {
   // Make sure the ROS node for Gazebo has already been initialized
   if (!ros::isInitialized()) {
     ROS_FATAL_STREAM("A ROS node for Gazebo has not been initialized, unable "
@@ -30,7 +30,7 @@ void GazeboRosRealsense::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf) {
   }
   ROS_INFO("Realsense Gazebo ROS plugin loading.");
 
-  RealSensePlugin::Load(_model, _sdf);
+  RealSenseL515Plugin::Load(_model, _sdf);
 
   this->rosnode_ = new ros::NodeHandle(this->GetHandle());
 
@@ -53,7 +53,7 @@ void GazeboRosRealsense::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf) {
   }
 }
 
-void GazeboRosRealsense::OnNewFrame(const rendering::CameraPtr cam,
+void GazeboRosRealsenseL515::OnNewFrame(const rendering::CameraPtr cam,
                                     const transport::PublisherPtr pub) {
   common::Time current_time = this->world->SimTime();
 
@@ -98,7 +98,7 @@ void GazeboRosRealsense::OnNewFrame(const rendering::CameraPtr cam,
 // Referenced from gazebo_plugins
 // https://github.com/ros-simulation/gazebo_ros_pkgs/blob/kinetic-devel/gazebo_plugins/src/gazebo_ros_openni_kinect.cpp#L302
 // Fill depth information
-bool GazeboRosRealsense::FillPointCloudHelper(sensor_msgs::PointCloud2 &point_cloud_msg,
+bool GazeboRosRealsenseL515::FillPointCloudHelper(sensor_msgs::PointCloud2 &point_cloud_msg,
                                               uint32_t rows_arg, uint32_t cols_arg,
                                               uint32_t step_arg, void *data_arg)
 {
@@ -188,11 +188,11 @@ bool GazeboRosRealsense::FillPointCloudHelper(sensor_msgs::PointCloud2 &point_cl
   return true;
 }
 
-void GazeboRosRealsense::OnNewDepthFrame() {
+void GazeboRosRealsenseL515::OnNewDepthFrame() {
   // get current time
   common::Time current_time = this->world->SimTime();
 
-  RealSensePlugin::OnNewDepthFrame();
+  RealSenseL515Plugin::OnNewDepthFrame();
 
   // copy data into image
   this->depth_msg_.header.frame_id =

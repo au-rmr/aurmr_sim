@@ -14,7 +14,7 @@
 // limitations under the License.
 */
 
-#include "realsense_gazebo_plugin/RealSensePlugin.h"
+#include "realsense_gazebo_plugin/RealSenseL515Plugin.h"
 #include <gazebo/physics/physics.hh>
 #include <gazebo/rendering/DepthCamera.hh>
 #include <gazebo/sensors/sensors.hh>
@@ -28,7 +28,7 @@
 using namespace gazebo;
 
 /////////////////////////////////////////////////
-RealSensePlugin::RealSensePlugin() {
+RealSenseL515Plugin::RealSenseL515Plugin() {
   this->depthCam = nullptr;
   this->iredCam = nullptr;
   this->colorCam = nullptr;
@@ -37,14 +37,14 @@ RealSensePlugin::RealSensePlugin() {
 }
 
 /////////////////////////////////////////////////
-RealSensePlugin::~RealSensePlugin() {}
+RealSenseL515Plugin::~RealSenseL515Plugin() {}
 
 /////////////////////////////////////////////////
-void RealSensePlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf) {
+void RealSenseL515Plugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf) {
   // Output the name of the model
   std::cout
       << std::endl
-      << "RealSensePlugin: The realsense_camera plugin is attach to model "
+      << "RealSensePlugin: The realsense_l515 plugin is attach to model "
       << _model->GetName() << std::endl;
 
   _sdf = _sdf->GetFirstElement();
@@ -105,7 +105,7 @@ void RealSensePlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf) {
     else if (name == "robotNamespace")
       break;
     else
-      throw std::runtime_error("Ivalid parameter for ReakSensePlugin");
+      throw std::runtime_error("Invalid parameter for Realsense l515 plugin: " + name);
 
     _sdf = _sdf->GetNextElement();
   } while (_sdf);
@@ -174,21 +174,21 @@ void RealSensePlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf) {
 
   // Listen to depth camera new frame event
   this->newDepthFrameConn = this->depthCam->ConnectNewDepthFrame(
-      std::bind(&RealSensePlugin::OnNewDepthFrame, this));
+      std::bind(&RealSenseL515Plugin::OnNewDepthFrame, this));
 
   this->newIredFrameConn = this->iredCam->ConnectNewImageFrame(std::bind(
-      &RealSensePlugin::OnNewFrame, this, this->iredCam, this->iredPub));
+      &RealSenseL515Plugin::OnNewFrame, this, this->iredCam, this->iredPub));
 
   this->newColorFrameConn = this->colorCam->ConnectNewImageFrame(std::bind(
-      &RealSensePlugin::OnNewFrame, this, this->colorCam, this->colorPub));
+      &RealSenseL515Plugin::OnNewFrame, this, this->colorCam, this->colorPub));
 
   // Listen to the update event
   this->updateConnection = event::Events::ConnectWorldUpdateBegin(
-      boost::bind(&RealSensePlugin::OnUpdate, this));
+      boost::bind(&RealSenseL515Plugin::OnUpdate, this));
 }
 
 /////////////////////////////////////////////////
-void RealSensePlugin::OnNewFrame(const rendering::CameraPtr cam,
+void RealSenseL515Plugin::OnNewFrame(const rendering::CameraPtr cam,
                                  const transport::PublisherPtr pub) {
   msgs::ImageStamped msg;
 
@@ -214,7 +214,7 @@ void RealSensePlugin::OnNewFrame(const rendering::CameraPtr cam,
 }
 
 /////////////////////////////////////////////////
-void RealSensePlugin::OnNewDepthFrame() {
+void RealSenseL515Plugin::OnNewDepthFrame() {
   // Get Depth Map dimensions
   unsigned int imageSize =
       this->depthCam->ImageWidth() * this->depthCam->ImageHeight();
@@ -251,4 +251,4 @@ void RealSensePlugin::OnNewDepthFrame() {
 }
 
 /////////////////////////////////////////////////
-void RealSensePlugin::OnUpdate() {}
+void RealSenseL515Plugin::OnUpdate() {}
