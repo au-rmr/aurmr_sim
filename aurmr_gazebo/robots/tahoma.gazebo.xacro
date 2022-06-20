@@ -5,6 +5,7 @@
   <xacro:include filename="$(find tahoma_description)/urdf/tahoma.xacro"/>
   <xacro:include filename="$(find aurmr_gazebo)/urdf/robotiq_2f_85_gazebo_macro.xacro"/>
   <xacro:include filename="$(find aurmr_gazebo)/urdf/l515.gazebo.xacro"/>
+  <xacro:include filename="$(find aurmr_gazebo)/urdf/d405.gazebo.xacro"/>
 
   <xacro:if value="$(arg fixed)">
     <link name="world"/>
@@ -144,7 +145,7 @@
   <xacro:if value="${'$(arg realsense)' == 'true' }">
     <xacro:sensor_l515_gazebo name="camera_lower_left"/>
     <xacro:sensor_l515_gazebo name="camera_lower_right"/>
-    <xacro:sensor_l515_gazebo name="camera_wrist"/>
+    <xacro:sensor_d405_gazebo name="camera_wrist"/>
   </xacro:if>
 
 </robot>
