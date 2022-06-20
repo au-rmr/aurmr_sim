@@ -12,7 +12,6 @@ This is the Gazebo URDF model for the Intel RealSense L515 camera
   <xacro:macro name="sensor_l515_gazebo" params="name  publish_pointcloud:=false" >
 
     <!-- Load parameters to model's main link-->
-    <xacro:property name="deg_to_rad" value="0.01745329251994329577" />
     <gazebo reference="${name}_link">
       <self_collide>0</self_collide>
       <enable_wind>0</enable_wind>
@@ -27,7 +26,7 @@ This is the Gazebo URDF model for the Intel RealSense L515 camera
 
       <sensor name="${name}color" type="camera">
         <camera name="${name}">
-          <horizontal_fov>${71.01*deg_to_rad}</horizontal_fov>
+          <horizontal_fov>${radians(71.01)}</horizontal_fov>
           <image>
             <width>1920</width>
             <height>1080</height>
@@ -49,7 +48,7 @@ This is the Gazebo URDF model for the Intel RealSense L515 camera
       </sensor>
       <sensor name="${name}ired" type="camera">
         <camera name="${name}">
-          <horizontal_fov>${70*deg_to_rad}</horizontal_fov>
+          <horizontal_fov>${radians(70)}</horizontal_fov>
           <image>
             <width>1024</width>
             <height>768</height>
@@ -71,7 +70,7 @@ This is the Gazebo URDF model for the Intel RealSense L515 camera
       </sensor>
       <sensor name="${name}depth" type="depth">
         <camera name="${name}">
-          <horizontal_fov>${70*deg_to_rad}</horizontal_fov>
+          <horizontal_fov>${radians(70)}</horizontal_fov>
           <image>
             <width>1024</width>
             <height>768</height>
@@ -115,6 +114,5 @@ This is the Gazebo URDF model for the Intel RealSense L515 camera
         <pointCloudCutoffMax>9.0</pointCloudCutoffMax>
       </plugin>
     </gazebo>
-
   </xacro:macro>
 </robot>
