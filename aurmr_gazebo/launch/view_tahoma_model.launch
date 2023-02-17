@@ -6,5 +6,5 @@
 
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 
-    <node name="rviz" pkg="rviz" type="rviz" required="true" args="-d $(find aurmr_gazebo)/config/view_tahoma_model.rviz"/>
+    <node name="rviz" pkg="rviz" type="rviz" required="false" args="-d $(find aurmr_gazebo)/config/view_tahoma_model.rviz"/>
 </launch>

@@ -7,13 +7,13 @@
 
     <!-- Controller configuration -->
     <arg name="controller_config_file" default="$(find aurmr_gazebo)/config/tahoma_controllers.yaml" doc="Config file used for defining the ROS-Control controllers."/>
-    <arg name="gripper_controller_config_file" default="$(find aurmr_gazebo)/config/2f_85_gripper_controllers.yaml" doc="Config file used for defining the gripper's ROS-Control controllers."/>
-    <arg name="controllers" default="joint_state_controller pos_joint_traj_controller gripper_controller" doc="Controllers that are activated by default."/>
+    <!--arg name="gripper_controller_config_file" default="$(find aurmr_gazebo)/config/2f_85_gripper_controllers.yaml" doc="Config file used for defining the gripper's ROS-Control controllers."/-->
+    <arg name="controllers" default="joint_state_controller pos_joint_traj_controller" doc="Controllers that are activated by default."/> <!--gripper_controller-->
     <arg name="stopped_controllers" default="joint_group_pos_controller" doc="Controllers that are initally loaded, but not started."/>
 
     <!-- Load controller settings -->
     <rosparam file="$(arg controller_config_file)" command="load"/>
-    <rosparam file="$(arg gripper_controller_config_file)" command="load"/>
+    <!--rosparam file="$(arg gripper_controller_config_file)" command="load"/-->
 
     <!-- URDF and TF support -->
     <param name="robot_description" command="xacro $(find aurmr_gazebo)/robots/tahoma.gazebo.xacro" />

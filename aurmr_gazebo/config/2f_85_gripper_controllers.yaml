@@ -2,7 +2,7 @@ gripper_controller:
   type: position_controllers/GripperActionController
   gains:
     finger_joint: {p: 10,  d: 0.1, i: 1, i_clamp: 1}
-  joint: gripper_finger_joint
+  joint: gripper_base_link_gripper_equilibrium_grasp
   action_monitor_rate: 20
   goal_tolerance: 0.002
   max_effort: 100

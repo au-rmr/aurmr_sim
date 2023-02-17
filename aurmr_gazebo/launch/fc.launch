@@ -1,8 +1,8 @@
 <launch>
   <arg name="rviz" default="true"/>
   <arg name="gui" default="true"/>
-  <arg name="pod_x" default="0.65"/>
-  <arg name="pod_y" default="0.47"/>
+  <arg name="pod_x" default="0.832"/>
+  <arg name="pod_y" default="0.4125"/>
   <arg name="pod_yaw" default="-1.57"/>
   <arg name="pod_id" default="1" />
   <arg name="world" default="$(find aurmr_gazebo)/worlds/fc.world" />
