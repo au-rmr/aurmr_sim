@@ -1,10 +1,45 @@
 <launch>
-  <arg name="rviz" default="true"/>
-  <arg name="gui" default="true"/>
-  <arg name="pod_x" default="0.832"/>
-  <arg name="pod_y" default="0.4125"/>
-  <arg name="pod_yaw" default="-1.57"/>
-  <arg name="pod_id" default="1" />
-  <arg name="world" default="$(find aurmr_gazebo)/worlds/fc.world" />
+  <arg name="rviz"   default="false"  doc="Starts RViz" />
+  <arg name="gui"    default="false"  doc="Starts Gazebo in GUI mode" />
+  <arg name="paused" default="false" doc="Starts Gazebo in paused mode" />
+  <arg name="world"  default="$(find aurmr_gazebo)/worlds/fc.world" doc="" />
+
+
+  <arg name="pod_id"  default="1" doc="Pod type" />
+  <!-- Pod pose range in millitimeters -->
+  <!-- <arg name="pod_x" default="0.832" /> -->
+  <!-- <arg name="pod_y" default="0.4125" /> -->
+  <!-- <arg name="pod_yaw" default="-1.57"/> -->
+  <arg name="x_start" default="920" />
+  <arg name="x_stop"  default="1010" />
+  <arg name="x_step"  default="25" />
+  <arg name="y_start" default="480" />
+  <arg name="y_stop"  default="940" />
+  <arg name="y_step"  default="30" />
+
+  <arg name="test_mode"      default="0"   doc="test_mode = 0: Reachibility | test_mode = 1: Manipulability" />
+  <arg name="bin_pose_randN" default="100" doc="Number of random pre-grasp poses for each bin" />
+  <!-- SSL =      1: if dRoll(or dPitch) > atan2(pod_bin_height(or _width), pod_bin_length), then max_angle is set to atan2(pod_bin_height(or _width), pod_bin_length)
+       SSL =      0: if dRoll(or dPitch) > atan2(pod_bin_height(or _width), pod_bin_length), then max_angle is set to dRoll(or dPitch)
+       SSL = 0 or 1: if dRoll(or dPitch) < atan2(pod_bin_height(or _width), pod_bin_length), then max_angle is set to dRoll(or dPitch) -->
+  <arg name="ssl"            default="0"  doc="" />
+
+  <arg name="dRoll"  default="8"   doc="Roll change (overall) in random pre-grasp pose generation (degrees). Roll and Yaw are flipped" />
+  <arg name="dPitch" default="8"   doc="Pitch change (overall) in random pre-grasp pose generation (degrees)" />
+  <arg name="dYaw"   default="720" doc="Yaw change (overall) in random pre-grasp pose generation (degrees)" />
+
+  <arg name="planning_attempts"     default="10"    doc="Number of planning attempts for each pre-graps pose joint configuration" />
+  <arg name="planning_time"         default="10.0"  doc="Allowed planning time, in seconds" />
+  <arg name="replan_attempts"       default="5"     doc="Number of attempts to compute joint configuration (IK) for each pre-graps pose" />
+  <arg name="joint_tolerance"       default="0.001" doc="Target pose joint values tolerance, in ?" />
+  <arg name="position_tolerance"    default="0.001" doc="Target pose position values tolerance, in meters" />
+  <arg name="orientation_tolerance" default="0.001" doc="Target pose orientation values tolerance, in radians" />
+
+  <!-- goal_type:  'pose'  - MoveIt would try to compute path for given pose (collision avoidance not guaranteed)
+                   'joint' - MoveIt would try to compute path for given joint configuration (collision avoidance guaranteed) -->
+  <arg name="goal_type" default="pose"  doc="" />
+  <arg name="vis_path"  default="False" doc="vis_path = True: Visualize path from 'home' pose to pre-grasp pose. 'home' - gripped object drop pose" />
+
+
   <include file="$(find aurmr_gazebo)/launch/empty_simulation.launch" pass_all_args="true"/>
 </launch>

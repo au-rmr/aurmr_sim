@@ -1,0 +1,49 @@
+<launch>
+    <arg name="rviz" default="true" doc="Starts RViz" />
+    <arg name="gui" default="true" doc="Starts Gazebo in GUI mode" />
+    <arg name="paused" default="false" doc="Starts Gazebo in paused mode" />
+    <arg name="pod_id" default="1" doc="Pod type" />
+    <arg name="world" default="$(find aurmr_gazebo)/worlds/fc.world" doc="" />
+    <include file="$(find aurmr_gazebo)/launch/empty_simulation.launch" pass_all_args="true"/>
+
+    <!-- Pod pose range in centimeters -->
+    <!-- <arg name="pod_x" default="0.832" /> -->
+    <!-- <arg name="pod_y" default="0.4125" /> -->
+    <!-- <arg name="pod_yaw" default="-1.57"/> -->
+    <arg name="x_start" default="60" />
+    <arg name="x_stop" default="65" />
+    <arg name="x_step" default="5" />
+    <arg name="y_start" default="41" />
+    <arg name="y_stop" default="46" />
+    <arg name="y_step" default="5" />
+
+
+    <for each="x" start="$(arg x_start)" end="$(arg x_stop)" step="$(arg x_step)">
+        <arg name="pod_x" default="$(eval $(arg x) / 100)"/>
+
+        <for each="y" start="$(arg y_start)" end="$(arg y_stop)" step="$(arg y_step)">
+            <arg name="pod_y" default="$(eval $(arg y) / 100)"/>
+
+            <include file="$(find aurmr_gazebo)/launch/fc.launch">
+                <arg name="pod_x" default="$(arg pod_x)" />
+                <arg name="pod_y" default="$(arg pod_y)" />
+                <!-- Prevent Gazebo from opening GUI, and the simulation will start automatically -->
+                <arg name="gui" default="true" />
+                <arg name="paused" default="false" />
+            </include>
+
+            <node pkg="$(find aurmr_tasks)/scripts" type="analyze_workspace" name="analyze_workspace" output="screen">
+                <param name="pod_x" value="$(arg pod_x)"/>
+                <param name="pod_y" value="$(arg pod_y)"/>
+            </node>
+
+            <!-- Define a node to kill the launched nodes -->
+            <node name="kill_nodes" pkg="rosnode" type="rosnode" args="kill --all"/>
+
+        </for>
+
+    </for>
+
+</launch>
+
+<!-- WARNING: unrecognized tag for -->

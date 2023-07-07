@@ -33,13 +33,19 @@
   <gazebo reference="arm_wrist_1_link">
     <selfCollide>true</selfCollide>
   </gazebo>
-  <gazebo reference="arm_wrist_3_link">
-    <selfCollide>true</selfCollide>
-  </gazebo>
   <gazebo reference="arm_wrist_2_link">
     <selfCollide>true</selfCollide>
   </gazebo>
-  <gazebo reference="arm_ee_link">
+  <gazebo reference="arm_wrist_3_link">
+    <selfCollide>true</selfCollide>
+  </gazebo>
+  <gazebo reference="gripper_base_link">
+    <selfCollide>true</selfCollide>
+  </gazebo>
+  <gazebo reference="epick_end_effector">
+    <selfCollide>true</selfCollide>
+  </gazebo>
+  <gazebo reference="connector_cover">
     <selfCollide>true</selfCollide>
   </gazebo>
 
@@ -51,11 +57,13 @@
   <gazebo reference="coupling">
       <material>Gazebo/Black</material>
   </gazebo>
+  <gazebo reference="connector_cover">
+      <material>Gazebo/Black</material>
+  </gazebo>
 
   <gazebo reference="stand">
     <material>AURMR/BlueAluminum</material>
   </gazebo>
-
   <gazebo reference="stand_brace">
     <material>AURMR/BlueAluminum</material>
   </gazebo>

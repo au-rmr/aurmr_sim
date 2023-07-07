@@ -1,11 +1,12 @@
+<?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="pod">
-  <xacro:arg name="id" default="" />
+  <xacro:arg name="id" default="1" />
   <xacro:arg name="fixed" default="true" />
   <xacro:include filename="$(find tahoma_description)/robots/pod$(arg id).xacro"/>
 
   <xacro:if value="$(arg fixed)">
     <link name="world"/>
-    <joint name="fixed" type="fixed">
+    <joint name="fixed" type="floating">
         <parent link="world"/>
         <child link="pod_base_link"/>
     </joint>
@@ -15,13 +16,11 @@
     <material>Gazebo/Gray</material>
   </gazebo>
 
-
   <xacro:macro name="color_pod_fabric" params="prefix">
     <xacro:arg name="prefix" default=""/>
 
     <xacro:property name="recipe_a" value="${[0,0,0,0,0,0,0,0,0,0,0,0,0]}"/>
     <xacro:property name="alphabet" value="abcdefghijklmnopqrstuvwxyz"/>
-
 
     <xacro:macro name="shifted_box" params="name">
       <gazebo reference="${name}">
@@ -32,14 +31,12 @@
     <xacro:macro name="bin" params="prefix:=^ id">
       <xacro:property name="bin_name" value="${prefix}bin_${id}"/>
 
-
       <xacro:shifted_box name="${bin_name}_bottom" />
       <xacro:shifted_box name="${bin_name}_left"/>
       <xacro:shifted_box name="${bin_name}_right"/>
       <xacro:shifted_box name="${bin_name}_top" />
       <xacro:shifted_box name="${bin_name}_back" />
       <xacro:shifted_box name="${bin_name}_flap" />
-
     </xacro:macro>
 
     <xacro:macro name="bin_row" params="prefix:=^ id parent sections  i:=0">
@@ -65,11 +62,9 @@
         <!-- recurse -->
         <xacro:shelf_stack parent="${parent}" recipe="${recipe[1:]}" i="${i+1}"/>
       </xacro:if>
-
     </xacro:macro>
 
     <xacro:shelf_stack prefix="pod_" parent="${prefix}fabric_base" recipe="${recipe_a}"/>
-
   </xacro:macro>
 
 

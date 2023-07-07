@@ -1,24 +1,71 @@
 <launch>
-  <arg name="rviz" default="true"/>
-  <arg name="gui" default="true"/>
-  <arg name="world" default="" />
-  <arg name="pod_x" />
-  <arg name="pod_y" />
-  <arg name="pod_yaw"/>
-  <arg name="pod_id" default="1" />
-  <env name="GAZEBO_MODEL_PATH" value="$(find aurmr_gazebo)/models:$(optenv GAZEBO_MODEL_PATH)" />
+  <arg name="rviz"   default="true"  doc="Starts RViz" />
+  <arg name="gui"    default="true"  doc="Starts Gazebo in GUI mode" />
+  <arg name="paused" default="false" doc="Starts Gazebo in paused mode" />
+  <arg name="world"  default=""      doc="" />
+  <env name="GAZEBO_MODEL_PATH"    value="$(find aurmr_gazebo)/models:$(optenv GAZEBO_MODEL_PATH)" />
   <env name="GAZEBO_RESOURCE_PATH" value="$(find aurmr_gazebo)/models/tahoma_materials:$(optenv GAZEBO_RESOURCE_PATH)" />
 
 
+  <arg name="pod_id"  default="1" doc="Pod type" />
+
+  <arg name="x_start" default="60" />
+  <arg name="x_stop"  default="65" />
+  <arg name="x_step"  default="5" />
+  <arg name="y_start" default="41" />
+  <arg name="y_stop"  default="46" />
+  <arg name="y_step"  default="5" />
+
+  <arg name="test_mode"      default="0"  doc="test_mode = 0: Reachibility | test_mode = 1: Manipulability" />
+  <arg name="bin_pose_randN" default="10" doc="Number of random pre-grasp poses for each bin" />
+  <!-- SSL =      1: if dRoll(or dPitch) > atan2(pod_bin_height(or _width), pod_bin_length), then max_angle is set to atan2(pod_bin_height(or _width), pod_bin_length)
+       SSL =      0: if dRoll(or dPitch) > atan2(pod_bin_height(or _width), pod_bin_length), then max_angle is set to dRoll(or dPitch)
+       SSL = 0 or 1: if dRoll(or dPitch) < atan2(pod_bin_height(or _width), pod_bin_length), then max_angle is set to dRoll(or dPitch) -->
+  <arg name="ssl"            default="0"  doc="" />
+
+  <arg name="dRoll"  default="8"   doc="Roll change (overall) in random pre-grasp pose generation (degrees). Roll and Yaw are flipped" />
+  <arg name="dPitch" default="8"   doc="Pitch change (overall) in random pre-grasp pose generation (degrees)" />
+  <arg name="dYaw"   default="720" doc="Yaw change (overall) in random pre-grasp pose generation (degrees)" />
+
+  <arg name="planning_attempts"     default="10"    doc="Number of planning attempts for each pre-graps pose joint configuration" />
+  <arg name="planning_time"         default="10.0"  doc="Allowed planning time, in seconds" />
+  <arg name="replan_attempts"       default="5"     doc="Number of attempts to compute joint configuration (IK) for each pre-graps pose" />
+  <arg name="joint_tolerance"       default="0.001" doc="Target pose joint values tolerance, in ?" />
+  <arg name="position_tolerance"    default="0.001" doc="Target pose position values tolerance, in meters" />
+  <arg name="orientation_tolerance" default="0.001" doc="Target pose orientation values tolerance, in radians" />
+
+  <!-- goal_type:  'pose'  - MoveIt would try to compute path for given pose (collision avoidance not guaranteed)
+                   'joint' - MoveIt would try to compute path for given joint configuration (collision avoidance guaranteed) -->
+  <arg name="goal_type" default="pose"  doc="" />
+  <arg name="vis_path"  default="False" doc="is_path = True: Visualize path from 'home' pose to pre-grasp pose. 'home' - gripped object drop pose" />
+
+
   <include file="$(find aurmr_gazebo)/launch/include/common.xml">
-    <arg name="gui" value="$(arg gui)" />
-    <arg name="world" value="$(arg world)" />
-    <arg name="pod_x" default="$(arg pod_x)"/>
-    <arg name="pod_y" default="$(arg pod_y)"/>
-    <arg name="pod_yaw" default="$(arg pod_yaw)"/>
-    <arg name="pod_id" default="$(arg pod_id)" />
+    <arg name="gui"                   value="$(arg gui)" />
+    <arg name="paused"                value="$(arg paused)"/>
+    <arg name="world"                 value="$(arg world)" />
+    <arg name="pod_id"                value="$(arg pod_id)" />
+    <arg name="x_start"               value="$(arg x_start)" />
+    <arg name="x_stop"                value="$(arg x_stop)" />
+    <arg name="x_step"                value="$(arg x_step)" />
+    <arg name="y_start"               value="$(arg y_start)" />
+    <arg name="y_stop"                value="$(arg y_stop)" />
+    <arg name="y_step"                value="$(arg y_step)" />
+    <arg name="test_mode"             value="$(arg test_mode)" />
+    <arg name="bin_pose_randN"        value="$(arg bin_pose_randN)" />
+    <arg name="ssl"                   value="$(arg ssl)" />
+    <arg name="dRoll"                 value="$(arg dRoll)" />
+    <arg name="dPitch"                value="$(arg dPitch)" />
+    <arg name="dYaw"                  value="$(arg dYaw)" />
+    <arg name="planning_attempts"     value="$(arg planning_attempts)" />
+    <arg name="planning_time"         value="$(arg planning_time)" />
+    <arg name="replan_attempts"       value="$(arg replan_attempts)" />
+    <arg name="joint_tolerance"       value="$(arg joint_tolerance)" />
+    <arg name="position_tolerance"    value="$(arg position_tolerance)" />
+    <arg name="orientation_tolerance" value="$(arg orientation_tolerance)" />
+    <arg name="goal_type"             value="$(arg goal_type)" />
+    <arg name="vis_path"              value="$(arg vis_path)" />
   </include>
 
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find aurmr_gazebo)/config/tahoma.rviz" if="$(arg rviz)"/>
-
+  <node if="$(arg rviz)" name="rviz" pkg="rviz" type="rviz" args="-d $(find aurmr_gazebo)/config/tahoma.rviz" />
 </launch>

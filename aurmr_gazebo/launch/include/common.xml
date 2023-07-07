@@ -1,57 +1,127 @@
 <launch>
-  <arg name="use_sim_time" default="true" />
-  <arg name="gui" default="true" />
-  <arg name="debug" default="false" />
-  <arg name="world" />
-  <arg name="robot_x" default="0" />
-  <arg name="robot_y" default="0" />
-  <arg name="robot_yaw" default="0" />
-  <arg name="pod_x" />
-  <arg name="pod_y" />
-  <arg name="pod_yaw" default="-1.57" />
-  <arg name="pod_id" default="1" />
-  <!-- Gazebo parameters -->
+  <arg name="gui" default="true" doc="Starts Gazebo in GUI mode" />
   <arg name="paused" default="false" doc="Starts Gazebo in paused mode" />
+  <arg name="world" default="" doc="" />
 
-  <arg unless="$(arg debug)" name="gazebo_binary" value="gzserver" />
-  <arg if="$(arg debug)" name="gazebo_binary" value="debug" />
+
+  <arg name="pod_id"  default="1" doc="Pod type" />
+  <arg name="x_start" default="60" />
+  <arg name="x_stop"  default="65" />
+  <arg name="x_step"  default="5" />
+  <arg name="y_start" default="41" />
+  <arg name="y_stop"  default="46" />
+  <arg name="y_step"  default="5" />
+
+  <arg name="test_mode"      default="0"  doc="test_mode = 0: Reachibility | test_mode = 1: Manipulability" />
+  <arg name="bin_pose_randN" default="10" doc="Number of random pre-grasp poses for each bin" />
+  <!-- SSL =      1: if dRoll(or dPitch) > atan2(pod_bin_height(or _width), pod_bin_length), then max_angle is set to atan2(pod_bin_height(or _width), pod_bin_length)
+       SSL =      0: if dRoll(or dPitch) > atan2(pod_bin_height(or _width), pod_bin_length), then max_angle is set to dRoll(or dPitch)
+       SSL = 0 or 1: if dRoll(or dPitch) < atan2(pod_bin_height(or _width), pod_bin_length), then max_angle is set to dRoll(or dPitch) -->
+  <arg name="ssl"            default="0"  doc="" />
+
+  <arg name="dRoll"  default="8"   doc="Roll change (overall) in random pre-grasp pose generation (degrees). Roll and Yaw are flipped" />
+  <arg name="dPitch" default="8"   doc="Pitch change (overall) in random pre-grasp pose generation (degrees)" />
+  <arg name="dYaw"   default="720" doc="Yaw change (overall) in random pre-grasp pose generation (degrees)" />
+
+  <arg name="planning_attempts"     default="10"    doc="Number of planning attempts for each pre-graps pose joint configuration" />
+  <arg name="planning_time"         default="10.0"  doc="Allowed planning time, in seconds" />
+  <arg name="replan_attempts"       default="5"     doc="Number of attempts to compute joint configuration (IK) for each pre-graps pose" />
+  <arg name="joint_tolerance"       default="0.001" doc="Target pose joint values tolerance, in ?" />
+  <arg name="position_tolerance"    default="0.001" doc="Target pose position values tolerance, in meters" />
+  <arg name="orientation_tolerance" default="0.001" doc="Target pose orientation values tolerance, in radians" />
+
+  <!-- goal_type:  'pose'  - MoveIt would try to compute path for given pose (collision avoidance not guaranteed)
+                   'joint' - MoveIt would try to compute path for given joint configuration (collision avoidance guaranteed) -->
+  <arg name="goal_type" default="pose"  doc="" />
+  <arg name="vis_path"  default="False" doc="is_path = True: Visualize path from 'home' pose to pre-grasp pose. 'home' - gripped object drop pose" />
+
+
+  <arg name="use_sim_time" default="true"  doc="" />
+  <arg name="debug"        default="false" doc="" />
+  <arg name="robot_x"      default="0" />
+  <arg name="robot_y"      default="0" />
+  <arg name="robot_yaw"    default="0" />
+
 
   <!-- set use_sim_time flag -->
-  <group if="$(arg use_sim_time)">
-    <param name="/use_sim_time" value="true" />
-  </group>
+  <param if="$(arg use_sim_time)" name="/use_sim_time" value="true" />
+
+
+  <!-- Gazebo parameters -->
+  <arg unless="$(arg debug)" name="gazebo_binary" value="gzserver" />
+  <arg     if="$(arg debug)" name="gazebo_binary" value="debug" />
 
   <!-- start world (-u to start paused, allowing robot spawn to set initial joint configurations -->
-  <node name="gazebo" pkg="gazebo_ros" type="$(arg gazebo_binary)" args="$(arg world) -u" respawn="false" output="screen" required="true" >
-  </node>
+  <arg     if="$(arg paused)" name="sim_world" value="-u $(arg world)" />
+  <arg unless="$(arg paused)" name="sim_world" value="$(arg world)" />
+  <node name="gazebo" pkg="gazebo_ros" type="$(arg gazebo_binary)" args="$(arg sim_world)" respawn="false" output="screen" required="true" />
 
   <!-- start gui -->
-  <group if="$(arg gui)">
-    <node name="gazebo_gui" pkg="gazebo_ros" type="gzclient" respawn="false" output="screen" launch-prefix="$(optenv OPTIRUN_LAUNCH_PREFIX)" required="true" />
-  </group>
+  <node if="$(arg gui)" name="gazebo_gui" pkg="gazebo_ros" type="gzclient" respawn="false" output="screen" launch-prefix="$(optenv OPTIRUN_LAUNCH_PREFIX)" required="true" />
 
+
+  <!-- Spawn Tahoma - robot workstation -->
   <include file="$(find aurmr_gazebo)/launch/include/spawn_tahoma.xml">
     <arg name="x" value="$(arg robot_x)" />
     <arg name="y" value="$(arg robot_y)" />
   </include>
 
+
   <!-- Gazebo doesn't provide the scaled interfaces (which the robot has), so pass scaled_pos use through to the unscaled interface -->
   <remap from="/scaled_pos_joint_traj_controller/follow_joint_trajectory" to="/pos_joint_traj_controller/follow_joint_trajectory"/>
+
+
   <!-- MoveIt -->
   <include file="$(find tahoma_moveit_config)/launch/move_group.launch">
     <arg name="load_robot_description" value="false" />
-    <arg name="pipeline" value="ompl" />
+    <arg name="pipeline"               value="ompl" />
   </include>
 
-  <include file="$(find tahoma_moveit_config)/launch/servo.launch">
 
+  <!-- Initialize control parameters (collision checking frequency/distance, PID, ...) -->
+  <include file="$(find tahoma_moveit_config)/launch/servo.launch" />
+
+
+  <!-- Initialize 'pod_state_publisher' rostopic from 'robot_state_publisher' package by remaping 'robot_description' to 'pod_description' -->
+  <include file="$(find tahoma_description)/launch/load_pod.launch">
+      <arg name="id" value="$(arg pod_id)"/>
   </include>
 
-  <include file="$(find aurmr_gazebo)/launch/include/spawn_pod.xml" if="$(eval pod_id > 0)">
+  <!-- Start up 'analyze_workspace' node and run python file where the same node is initialized and pod spawned -->
+  <node pkg="aurmr_tasks" type="analyze_workspace" name="analyze_workspace" output="screen">
+      <param name="pod_id"  value="$(arg pod_id)" />
+
+      <param name="x_start" value="$(arg x_start)" />
+      <param name="x_stop"  value="$(arg x_stop)" />
+      <param name="x_step"  value="$(arg x_step)" />
+      <param name="y_start" value="$(arg y_start)" />
+      <param name="y_stop"  value="$(arg y_stop)" />
+      <param name="y_step"  value="$(arg y_step)" />
+
+      <param name="test_mode"      value="$(arg test_mode)" />
+      <param name="bin_pose_randN" value="$(arg bin_pose_randN)" />
+      <param name="ssl"            value="$(arg ssl)" />
+
+      <param name="dRoll"  value="$(arg dRoll)" />
+      <param name="dPitch" value="$(arg dPitch)" />
+      <param name="dYaw"   value="$(arg dYaw)" />
+
+      <param name="planning_attempts"     value="$(arg planning_attempts)" />
+      <param name="planning_time"         value="$(arg planning_time)" />
+      <param name="replan_attempts"       value="$(arg replan_attempts)" />
+      <param name="joint_tolerance"       value="$(arg joint_tolerance)" />
+      <param name="position_tolerance"    value="$(arg position_tolerance)" />
+      <param name="orientation_tolerance" value="$(arg orientation_tolerance)" />
+
+      <param name="goal_type" value="$(arg goal_type)" />
+      <param name="vis_path"  value="$(arg vis_path)" />
+  </node>
+
+  <!-- <include file="$(find aurmr_gazebo)/launch/include/spawn_pod.xml" if="$(eval pod_id > 0)">
       <arg name="x" value="$(arg pod_x)" />
       <arg name="y" value="$(arg pod_y)" />
       <arg name="yaw" value="$(arg pod_yaw)" />
       <arg name="id" value="$(arg pod_id)" />
-  </include>
+  </include> -->
 
 </launch>
