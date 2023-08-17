@@ -34,7 +34,7 @@
                    'joint' - MoveIt would try to compute path for given joint configuration (collision avoidance guaranteed) -->
   <arg name="goal_type" default="pose"  doc="" />
   <arg name="vis_path"  default="False" doc="is_path = True: Visualize path from 'home' pose to pre-grasp pose. 'home' - gripped object drop pose" />
-
+  <arg name="vis_pose"  default="false" />
 
   <arg name="use_sim_time" default="true"  doc="" />
   <arg name="debug"        default="false" doc="" />
@@ -115,6 +115,7 @@
 
       <param name="goal_type" value="$(arg goal_type)" />
       <param name="vis_path"  value="$(arg vis_path)" />
+      <param name="vis_pose"  value="$(arg vis_pose)" />
   </node>
 
   <!-- <include file="$(find aurmr_gazebo)/launch/include/spawn_pod.xml" if="$(eval pod_id > 0)">

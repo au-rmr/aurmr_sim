@@ -65,6 +65,7 @@
     <arg name="orientation_tolerance" value="$(arg orientation_tolerance)" />
     <arg name="goal_type"             value="$(arg goal_type)" />
     <arg name="vis_path"              value="$(arg vis_path)" />
+    <arg name="vis_pose"              value="$(arg rviz)" />
   </include>
 
   <node if="$(arg rviz)" name="rviz" pkg="rviz" type="rviz" args="-d $(find aurmr_gazebo)/config/tahoma.rviz" />

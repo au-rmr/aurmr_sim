@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="pod">
+  <xacro:arg name="id" default="1A" />
+  <xacro:arg name="fixed" default="true" />
+  <xacro:include filename="$(find tahoma_description)/robots/pod.xacro"/>
+  <xacro:pod_recipe id="$(arg id)"/>
+
+  <!-- Scripts below are just to paint the pod (bins & ) in Gazebo scene -->
+  <xacro:if value="$(arg fixed)">
+    <link name="world"/>
+    <joint name="fixed" type="floating">
+        <parent link="world"/>
+        <child link="pod_base_link"/>
+    </joint>
+  </xacro:if>
+
+  <gazebo reference="pod_base_link">
+    <material>Gazebo/Gray</material>
+  </gazebo>
+
+  <xacro:macro name="color_pod_fabric" params="prefix">
+    <xacro:arg name="prefix" default=""/>
+
+    <xacro:property name="alphabet" value="abcdefghijklmnopqrstuvwxyz"/>
+    <xacro:property name="POD_ID"  value="${'$(arg id)'[0]}"/>
+    <xacro:property name="FACE_ID" value="${'$(arg id)'[1]}"/>
+    
+
+    <xacro:if value="${FACE_ID == 'B' or FACE_ID == 'D'}">
+      <xacro:if value="${POD_ID == 1}">
+        <xacro:property name="X_OFFSET" value="1"/>
+      </xacro:if>
+      <xacro:if value="${POD_ID == 2}">
+        <xacro:property name="X_OFFSET" value="1"/>
+        <xacro:property name="NUM_COLUMNS" value="1"/>
+      </xacro:if>
+
+      <xacro:if value="${FACE_ID == 'B'}">
+        <xacro:property name="BIN_HEIGHTS" value="${[0,0,0,0,0,0,0,0]}"/><!-- 8x2 or 8x1 bin pod -->
+      </xacro:if>
+      <xacro:if value="${FACE_ID == 'D'}">
+        <xacro:property name="BIN_HEIGHTS" value="${[0,0,0,0,0,0,0]}"/><!-- 7x2 or 7x1 bin pod -->
+      </xacro:if>
+    </xacro:if>
+    <xacro:unless value="${FACE_ID == 'B' or FACE_ID == 'D'}">
+      <xacro:property name="X_OFFSET" value="0"/>
+
+      <xacro:if value="${POD_ID == 1}">
+        <xacro:property name="NUM_COLUMNS" value="4"/>
+        <xacro:if value="${FACE_ID == 'A'}">
+          <xacro:property name="BIN_HEIGHTS" value="${[0,0,0,0,0,0,0,0,0,0,0,0,0]}"/><!-- 13x4 bin pod -->
+        </xacro:if>
+        <xacro:if value="${FACE_ID == 'C'}">
+          <xacro:property name="BIN_HEIGHTS" value="${[0,0,0,0,0,0,0,0,0,0,0,0]}"/><!-- 12x4 bin pod -->
+        </xacro:if>
+      </xacro:if>
+      <xacro:if value="${POD_ID == 2}">
+        <xacro:property name="NUM_COLUMNS" value="3"/>
+        <xacro:property name="BIN_HEIGHTS" value="${[0,0,0,0,0,0,0,0]}"/><!-- 8x3 bin pod -->
+      </xacro:if>
+    </xacro:unless>
+
+    <xacro:macro name="shifted_box" params="name">
+      <gazebo reference="${name}">
+        <material>AURMR/YellowFabric</material>
+      </gazebo>
+    </xacro:macro>
+
+
+    <xacro:macro name="bin" params="prefix colrow_id rightmost:=false top_shelf:=false">
+      <xacro:property name="bin_name" value="${prefix}bin_${colrow_id}"/>
+
+      <xacro:shifted_box name="${bin_name}_bottom"/>
+      <xacro:shifted_box name="${bin_name}_left"/>
+      <xacro:shifted_box name="${bin_name}_back"/>
+      <xacro:shifted_box name="${bin_name}_flap"/>
+
+      <xacro:if value="${rightmost}">
+        <xacro:shifted_box name="${bin_name}_right"/>
+      </xacro:if>
+
+      <xacro:if value="${top_shelf}">
+        <xacro:shifted_box name="${bin_name}_top"/>
+      </xacro:if>
+    </xacro:macro>
+
+
+    <xacro:macro name="bin_row" params="prefix row_id bin_row_base sections i:=0 top_shelf:=false">
+      <xacro:property name="bin_name" value="${prefix}bin_${i+1}${row_id}"/>
+
+      <xacro:if value="${sections == 1}">
+        <xacro:property name="rightmost" value="true"/>
+      </xacro:if>
+      <xacro:unless value="${sections == 1}">
+        <xacro:property name="rightmost" value="false"/>
+      </xacro:unless> 
+
+      <xacro:bin prefix="${prefix}" colrow_id="${i+1}${row_id}" rightmost="${rightmost}" top_shelf="${top_shelf}"/>
+
+      <xacro:if value="${sections > 1}"><!-- recurse for the remaining bins -->
+        <xacro:bin_row prefix="${prefix}" row_id="${row_id}" bin_row_base="${bin_row_base}" sections="${sections-1}" i="${i+1}" top_shelf="${top_shelf}"/>
+      </xacro:if>
+    </xacro:macro>
+
+
+    <xacro:macro name="shelf" params="prefix row_id sections:=4 top_shelf:=false">
+      <xacro:property name="shelf_name" value="${prefix}shelf_${row_id}"/>
+
+      <xacro:if value="${X_OFFSET != 0}"><!-- left margin, relates to B & D faces of pods -->
+        <xacro:shifted_box name="${shelf_name}_left_margin"/>
+      </xacro:if> 
+
+      <xacro:bin_row prefix="${prefix}" row_id="${row_id}" bin_row_base="${shelf_name}" sections="${sections}" top_shelf="${top_shelf}"/>
+
+      <xacro:if value="${X_OFFSET != 0}"><!-- left margin, relates to B & D faces of pods -->
+        <xacro:shifted_box name="${shelf_name}_right_margin"/>
+      </xacro:if> 
+    </xacro:macro>
+
+
+    <xacro:macro name="shelf_stack" params="prefix shelf_stack_base shelf_heights i:=0">
+      <xacro:property name="shelf_name" value="${prefix}shelf_${alphabet[i]}"/>
+
+      <xacro:if value="${FACE_ID == 'B' or FACE_ID == 'D'}">
+        <xacro:if value="${POD_ID == '1' and i == 0}">
+          <xacro:property name="NUM_COLUMNS" value="1"/>
+        </xacro:if>
+        <xacro:unless value="${POD_ID == '1' and i == 0}">
+          <xacro:property name="NUM_COLUMNS" value="2"/>
+        </xacro:unless>
+      </xacro:if>
+
+      <xacro:if value="${len(shelf_heights) == 1}">
+        <xacro:property name="top_shelf" value="true"/>
+      </xacro:if>
+      <xacro:unless value="${len(shelf_heights) == 1}">
+        <xacro:property name="top_shelf" value="false"/>
+      </xacro:unless> 
+
+      <xacro:shelf prefix="${prefix}" row_id="${alphabet[i]}" sections="${NUM_COLUMNS}" top_shelf="${top_shelf}"/>
+
+      <xacro:if value="${len(shelf_heights) > 1}"><!-- recurse for the remaining shelves -->
+        <xacro:shelf_stack prefix="${prefix}" shelf_stack_base="${shelf_stack_base}" shelf_heights="${shelf_heights[1:]}" i="${i+1}"/>
+      </xacro:if>
+    </xacro:macro>
+
+
+    <xacro:shelf_stack prefix="pod_" shelf_stack_base="${prefix}fabric_base" shelf_heights="${BIN_HEIGHTS}"/>
+  </xacro:macro>
+
+
+  <xacro:color_pod_fabric prefix="pod_"/>
+
+</robot>
