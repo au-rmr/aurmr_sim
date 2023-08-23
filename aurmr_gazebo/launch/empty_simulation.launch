@@ -7,7 +7,8 @@
   <env name="GAZEBO_RESOURCE_PATH" value="$(find aurmr_gazebo)/models/tahoma_materials:$(optenv GAZEBO_RESOURCE_PATH)" />
 
 
-  <arg name="pod_id"  default="1" doc="Pod type" />
+  <arg name="pod_id"         default="1A"   doc="Pod type" />
+  <arg name="include_flaps"  default="true" doc="Adds bin flaps into urdf model (matters in Gazebo collision scene)" />
 
   <arg name="x_start" default="60" />
   <arg name="x_stop"  default="65" />
@@ -45,6 +46,7 @@
     <arg name="paused"                value="$(arg paused)"/>
     <arg name="world"                 value="$(arg world)" />
     <arg name="pod_id"                value="$(arg pod_id)" />
+    <arg name="include_flaps"         value="$(arg include_flaps)" />
     <arg name="x_start"               value="$(arg x_start)" />
     <arg name="x_stop"                value="$(arg x_stop)" />
     <arg name="x_step"                value="$(arg x_step)" />

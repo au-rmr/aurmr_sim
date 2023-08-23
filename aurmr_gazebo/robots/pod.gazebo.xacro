@@ -1,9 +1,11 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="pod">
-  <xacro:arg name="id" default="1A" />
+  <xacro:arg name="id" default="1B" />
+  <xacro:arg name="include_flaps" default="true" />
   <xacro:arg name="fixed" default="true" />
+  
   <xacro:include filename="$(find tahoma_description)/robots/pod.xacro"/>
-  <xacro:pod_recipe id="$(arg id)"/>
+  <xacro:pod_recipe pod_id="$(arg id)" include_flaps="$(arg include_flaps)"/>
 
   <!-- Scripts below are just to paint the pod (bins & ) in Gazebo scene -->
   <xacro:if value="$(arg fixed)">
@@ -67,10 +69,11 @@
     </xacro:macro>
 
 
-    <xacro:macro name="bin" params="prefix colrow_id rightmost:=false top_shelf:=false">
+    <xacro:macro name="bin" params="prefix colrow_id rightmost:=false">
       <xacro:property name="bin_name" value="${prefix}bin_${colrow_id}"/>
 
       <xacro:shifted_box name="${bin_name}_bottom"/>
+      <xacro:shifted_box name="${bin_name}_top"/>
       <xacro:shifted_box name="${bin_name}_left"/>
       <xacro:shifted_box name="${bin_name}_back"/>
       <xacro:shifted_box name="${bin_name}_flap"/>
@@ -78,14 +81,10 @@
       <xacro:if value="${rightmost}">
         <xacro:shifted_box name="${bin_name}_right"/>
       </xacro:if>
-
-      <xacro:if value="${top_shelf}">
-        <xacro:shifted_box name="${bin_name}_top"/>
-      </xacro:if>
     </xacro:macro>
 
 
-    <xacro:macro name="bin_row" params="prefix row_id bin_row_base sections i:=0 top_shelf:=false">
+    <xacro:macro name="bin_row" params="prefix row_id bin_row_base sections i:=0">
       <xacro:property name="bin_name" value="${prefix}bin_${i+1}${row_id}"/>
 
       <xacro:if value="${sections == 1}">
@@ -95,22 +94,22 @@
         <xacro:property name="rightmost" value="false"/>
       </xacro:unless> 
 
-      <xacro:bin prefix="${prefix}" colrow_id="${i+1}${row_id}" rightmost="${rightmost}" top_shelf="${top_shelf}"/>
+      <xacro:bin prefix="${prefix}" colrow_id="${i+1}${row_id}" rightmost="${rightmost}"/>
 
       <xacro:if value="${sections > 1}"><!-- recurse for the remaining bins -->
-        <xacro:bin_row prefix="${prefix}" row_id="${row_id}" bin_row_base="${bin_row_base}" sections="${sections-1}" i="${i+1}" top_shelf="${top_shelf}"/>
+        <xacro:bin_row prefix="${prefix}" row_id="${row_id}" bin_row_base="${bin_row_base}" sections="${sections-1}" i="${i+1}"/>
       </xacro:if>
     </xacro:macro>
 
 
-    <xacro:macro name="shelf" params="prefix row_id sections:=4 top_shelf:=false">
+    <xacro:macro name="shelf" params="prefix row_id sections:=4">
       <xacro:property name="shelf_name" value="${prefix}shelf_${row_id}"/>
 
       <xacro:if value="${X_OFFSET != 0}"><!-- left margin, relates to B & D faces of pods -->
         <xacro:shifted_box name="${shelf_name}_left_margin"/>
       </xacro:if> 
 
-      <xacro:bin_row prefix="${prefix}" row_id="${row_id}" bin_row_base="${shelf_name}" sections="${sections}" top_shelf="${top_shelf}"/>
+      <xacro:bin_row prefix="${prefix}" row_id="${row_id}" bin_row_base="${shelf_name}" sections="${sections}"/>
 
       <xacro:if value="${X_OFFSET != 0}"><!-- left margin, relates to B & D faces of pods -->
         <xacro:shifted_box name="${shelf_name}_right_margin"/>
@@ -118,34 +117,29 @@
     </xacro:macro>
 
 
-    <xacro:macro name="shelf_stack" params="prefix shelf_stack_base shelf_heights i:=0">
+    <xacro:macro name="shelf_stack" params="prefix shelf_heights i:=0">
       <xacro:property name="shelf_name" value="${prefix}shelf_${alphabet[i]}"/>
 
       <xacro:if value="${FACE_ID == 'B' or FACE_ID == 'D'}">
-        <xacro:if value="${POD_ID == '1' and i == 0}">
+        <xacro:if value="${POD_ID == 1 and i == 0}">
           <xacro:property name="NUM_COLUMNS" value="1"/>
         </xacro:if>
-        <xacro:unless value="${POD_ID == '1' and i == 0}">
-          <xacro:property name="NUM_COLUMNS" value="2"/>
+        <xacro:unless value="${POD_ID == 1 and i == 0}">
+          <xacro:if value="${POD_ID == 1}">
+            <xacro:property name="NUM_COLUMNS" value="2"/>
+          </xacro:if>
         </xacro:unless>
       </xacro:if>
 
-      <xacro:if value="${len(shelf_heights) == 1}">
-        <xacro:property name="top_shelf" value="true"/>
-      </xacro:if>
-      <xacro:unless value="${len(shelf_heights) == 1}">
-        <xacro:property name="top_shelf" value="false"/>
-      </xacro:unless> 
-
-      <xacro:shelf prefix="${prefix}" row_id="${alphabet[i]}" sections="${NUM_COLUMNS}" top_shelf="${top_shelf}"/>
+      <xacro:shelf prefix="${prefix}" row_id="${alphabet[i]}" sections="${NUM_COLUMNS}"/>
 
       <xacro:if value="${len(shelf_heights) > 1}"><!-- recurse for the remaining shelves -->
-        <xacro:shelf_stack prefix="${prefix}" shelf_stack_base="${shelf_stack_base}" shelf_heights="${shelf_heights[1:]}" i="${i+1}"/>
+        <xacro:shelf_stack prefix="${prefix}" shelf_heights="${shelf_heights[1:]}" i="${i+1}"/>
       </xacro:if>
     </xacro:macro>
 
 
-    <xacro:shelf_stack prefix="pod_" shelf_stack_base="${prefix}fabric_base" shelf_heights="${BIN_HEIGHTS}"/>
+    <xacro:shelf_stack prefix="pod_" shelf_heights="${BIN_HEIGHTS}"/>
   </xacro:macro>
 
 

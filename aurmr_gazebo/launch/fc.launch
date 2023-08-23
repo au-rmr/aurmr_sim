@@ -1,21 +1,22 @@
 <launch>
-  <arg name="rviz"   default="false"  doc="Starts RViz" />
-  <arg name="gui"    default="false"  doc="Starts Gazebo in GUI mode" />
+  <arg name="rviz"   default="true"  doc="Starts RViz" />
+  <arg name="gui"    default="true"  doc="Starts Gazebo in GUI mode" />
   <arg name="paused" default="false" doc="Starts Gazebo in paused mode" />
   <arg name="world"  default="$(find aurmr_gazebo)/worlds/fc.world" doc="" />
 
 
-  <arg name="pod_id"  default="1" doc="Pod type" />
+  <arg name="pod_id"         default="1D"   doc="Pod type" />
+  <arg name="include_flaps"  default="false" doc="Adds bin flaps into urdf model (matters in Gazebo collision scene)" />
   <!-- Pod pose range in millitimeters -->
   <!-- <arg name="pod_x" default="0.832" /> -->
   <!-- <arg name="pod_y" default="0.4125" /> -->
   <!-- <arg name="pod_yaw" default="-1.57"/> -->
-  <arg name="x_start" default="920" />
-  <arg name="x_stop"  default="1010" />
-  <arg name="x_step"  default="25" />
-  <arg name="y_start" default="480" />
-  <arg name="y_stop"  default="940" />
-  <arg name="y_step"  default="30" />
+  <arg name="x_start" default="970" />
+  <arg name="x_stop"  default="971" />
+  <arg name="x_step"  default="1" />
+  <arg name="y_start" default="580" />
+  <arg name="y_stop"  default="581" />
+  <arg name="y_step"  default="1" />
 
   <arg name="test_mode"      default="0"   doc="test_mode = 0: Reachibility | test_mode = 1: Manipulability" />
   <arg name="bin_pose_randN" default="100" doc="Number of random pre-grasp poses for each bin" />

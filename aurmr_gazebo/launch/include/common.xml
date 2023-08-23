@@ -4,7 +4,8 @@
   <arg name="world" default="" doc="" />
 
 
-  <arg name="pod_id"  default="1" doc="Pod type" />
+  <arg name="pod_id"         default="1A"   doc="Pod type" />
+  <arg name="include_flaps"  default="true" doc="Adds bin flaps into urdf model (matters in Gazebo collision scene)" />
   <arg name="x_start" default="60" />
   <arg name="x_stop"  default="65" />
   <arg name="x_step"  default="5" />
@@ -54,6 +55,7 @@
   <!-- start world (-u to start paused, allowing robot spawn to set initial joint configurations -->
   <arg     if="$(arg paused)" name="sim_world" value="-u $(arg world)" />
   <arg unless="$(arg paused)" name="sim_world" value="$(arg world)" />
+  
   <node name="gazebo" pkg="gazebo_ros" type="$(arg gazebo_binary)" args="$(arg sim_world)" respawn="false" output="screen" required="true" />
 
   <!-- start gui -->
@@ -84,12 +86,14 @@
 
   <!-- Initialize 'pod_state_publisher' rostopic from 'robot_state_publisher' package by remaping 'robot_description' to 'pod_description' -->
   <include file="$(find tahoma_description)/launch/load_pod.launch">
-      <arg name="id" value="$(arg pod_id)"/>
+      <arg name="pod_id" value="$(arg pod_id)"/>
+      <arg name="include_flaps" value="$(arg include_flaps)"/>
   </include>
 
   <!-- Start up 'analyze_workspace' node and run python file where the same node is initialized and pod spawned -->
   <node pkg="aurmr_tasks" type="analyze_workspace" name="analyze_workspace" output="screen">
-      <param name="pod_id"  value="$(arg pod_id)" />
+      <param name="podface_id"    value="$(arg pod_id)" />
+      <param name="include_flaps" value="$(arg include_flaps)" />
 
       <param name="x_start" value="$(arg x_start)" />
       <param name="x_stop"  value="$(arg x_stop)" />
@@ -119,9 +123,9 @@
   </node>
 
   <!-- <include file="$(find aurmr_gazebo)/launch/include/spawn_pod.xml" if="$(eval pod_id > 0)">
-      <arg name="x" value="$(arg pod_x)" />
-      <arg name="y" value="$(arg pod_y)" />
-      <arg name="yaw" value="$(arg pod_yaw)" />
+      <arg name="x" value="$(arg x_start)" />
+      <arg name="y" value="$(arg y_start)" />
+      <arg name="yaw" value="0" />
       <arg name="id" value="$(arg pod_id)" />
   </include> -->
 
