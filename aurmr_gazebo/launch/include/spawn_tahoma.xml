@@ -3,7 +3,7 @@
     <arg name="y" default="0.0" />
     <arg name="z" default="0.0" />
     <arg name="yaw" default="0.0" />
-    <arg name="realsense" default="true" />
+    <arg name="camera" default="true" />
 
     <!-- Controller configuration -->
     <arg name="controller_config_file" default="$(find aurmr_gazebo)/config/tahoma_controllers.yaml" doc="Config file used for defining the ROS-Control controllers."/>
@@ -16,7 +16,7 @@
     <!--rosparam file="$(arg gripper_controller_config_file)" command="load"/-->
 
     <!-- URDF and TF support -->
-    <param name="robot_description" command="xacro $(find aurmr_gazebo)/robots/tahoma.gazebo.xacro" />
+    <param name="robot_description" command="xacro $(find aurmr_gazebo)/robots/tahoma.gazebo.xacro camera:=$(arg camera)" />
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" >
         <param name="publish_frequency" value="100.0"/>
     </node>

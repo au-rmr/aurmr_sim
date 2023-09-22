@@ -4,14 +4,16 @@
     <arg name="z" default="0.0" />
     <arg name="yaw" />
     <arg name="id" />
+    <arg name="include_flaps" default="true" />
 
     <include file="$(find tahoma_description)/launch/load_pod.launch">
-        <arg name="id" value="$(arg id)"/>
+        <arg name="pod_id" value="$(arg id)"/>
+        <arg name="include_flaps" value="$(arg include_flaps)" />
     </include>
 
     <node name="robot_to_pod_transform" pkg="tf2_ros" type="static_transform_publisher" args="$(arg x) $(arg y) 0 $(arg yaw) 0 0 base_link pod_base_link" output="screen"/>
 
-    <param name="pod_sim_description" command="xacro $(find aurmr_gazebo)/robots/pod.gazebo.xacro id:=$(arg id)" />
+    <param name="pod_sim_description" command="xacro $(find aurmr_gazebo)/robots/pod.gazebo.xacro pod_id:=$(arg id)" />
 
     <!-- Put pod in gazebo -->
     <node name="pod_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
