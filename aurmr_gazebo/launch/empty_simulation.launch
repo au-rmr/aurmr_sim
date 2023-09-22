@@ -17,9 +17,9 @@
     <arg name="paused"                value="$(arg paused)"/>
     <arg name="world"                 value="$(arg world)" />
     <arg name="pod_id"                value="$(arg pod_id)" />
-    <arg name="pod_x" default="$(arg pod_x)"/>
-    <arg name="pod_y" default="$(arg pod_y)"/>
-    <arg name="pod_yaw" default="$(arg pod_yaw)"/>
+    <arg name="pod_x"                 value="$(arg pod_x)"/>
+    <arg name="pod_y"                 value="$(arg pod_y)"/>
+    <arg name="pod_yaw"               value="$(arg pod_yaw)"/>
     <arg name="include_flaps"         value="$(arg include_flaps)" />
   </include>
 

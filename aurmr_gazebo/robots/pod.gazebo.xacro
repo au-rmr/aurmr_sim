@@ -3,7 +3,7 @@
   <xacro:arg name="id" default="1B" />
   <xacro:arg name="include_flaps" default="true" />
   <xacro:arg name="fixed" default="true" />
-  
+
   <xacro:include filename="$(find tahoma_description)/robots/pod.xacro"/>
   <xacro:pod_recipe pod_id="$(arg id)" include_flaps="$(arg include_flaps)"/>
 
@@ -26,7 +26,7 @@
     <xacro:property name="alphabet" value="abcdefghijklmnopqrstuvwxyz"/>
     <xacro:property name="POD_ID"  value="${'$(arg id)'[0]}"/>
     <xacro:property name="FACE_ID" value="${'$(arg id)'[1]}"/>
-    
+
 
     <xacro:if value="${FACE_ID == 'B' or FACE_ID == 'D'}">
       <xacro:if value="${POD_ID == 1}">
@@ -92,7 +92,7 @@
       </xacro:if>
       <xacro:unless value="${sections == 1}">
         <xacro:property name="rightmost" value="false"/>
-      </xacro:unless> 
+      </xacro:unless>
 
       <xacro:bin prefix="${prefix}" colrow_id="${i+1}${row_id}" rightmost="${rightmost}"/>
 
@@ -107,13 +107,13 @@
 
       <xacro:if value="${X_OFFSET != 0}"><!-- left margin, relates to B & D faces of pods -->
         <xacro:shifted_box name="${shelf_name}_left_margin"/>
-      </xacro:if> 
+      </xacro:if>
 
       <xacro:bin_row prefix="${prefix}" row_id="${row_id}" bin_row_base="${shelf_name}" sections="${sections}"/>
 
       <xacro:if value="${X_OFFSET != 0}"><!-- left margin, relates to B & D faces of pods -->
         <xacro:shifted_box name="${shelf_name}_right_margin"/>
-      </xacro:if> 
+      </xacro:if>
     </xacro:macro>
 
 
